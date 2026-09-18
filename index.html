@@ -128,7 +128,7 @@ button{min-height:38px}
  <div class="startBox">
   <div class="eyebrow">ATLAS CONQUEST · WORLD STRATEGY</div>
   <h1>BUILD. ALLY. CONQUER.</h1>
-  <p>Build an empire on a 177-country world map. Choose your nation, grow your economy, fortify borders and conquer adjacent territories against friends or AI. Modern, WWI and WWII presets are included.</p>
+  <p>Build an empire on a 177-country world map. Choose your nation, grow your economy, fortify borders and conquer adjacent territories against friends or AI. Present-day world only. Choose your country and build your nation.</p>
   <div class="features"><div class="feature">🌍 177 countries</div><div class="feature">⚔️ Conquest combat</div><div class="feature">🤖 AI world powers</div><div class="feature">⚡ Live rooms</div></div>
   <div class="startSetup"><input id="startName" class="full" maxlength="20" placeholder="Your player name"><input id="startRoomCode" maxlength="6" placeholder="Room code (for joining)"><div class="small" style="display:flex;align-items:center">Create a room for friends, or enter the host's 6-character code.</div></div>
   <div class="startActions"><button id="startSolo" class="ghost bigStart">PLAY SOLO</button><button id="startCreate" class="primary bigStart">CREATE ROOM</button><button id="startJoin" class="bigStart">JOIN ROOM</button></div>
@@ -187,12 +187,12 @@ button{min-height:38px}
 </div>>
 
 <div id="app">
-<header class="topbar"><div class="brand"><span class="brandMark" aria-hidden="true">◎</span><span>ATLAS CONQUEST</span><span class="kicker">WORLD STRATEGY</span></div><div class="live"><i id="liveDot" class="liveDot"></i><span id="status">Offline</span></div><div class="spacer"></div><div id="scenarioPill" class="pill">MODERN</div><div id="roomPill" class="pill roomPill hidden">ROOM —</div><div id="turnPill" class="pill">LOBBY</div><div id="playerPill" class="pill">0 ONLINE</div></header>
+<header class="topbar"><div class="brand"><span class="brandMark" aria-hidden="true">◎</span><span>ATLAS CONQUEST</span><span class="kicker">WORLD STRATEGY</span></div><div class="live"><i id="liveDot" class="liveDot"></i><span id="status">Offline</span></div><div class="spacer"></div><div id="scenarioPill" class="pill">PRESENT DAY · 2026</div><div id="roomPill" class="pill roomPill hidden">ROOM —</div><div id="turnPill" class="pill">LOBBY</div><div id="playerPill" class="pill">0 ONLINE</div></header>
 <main>
 <section id="mapPanel" class="panel"><div class="mapTools"><div id="layers" class="layerbar"></div><button id="resetZoom" class="reset" title="Reset map">↺</button></div><div class="mapWrap"><svg id="map" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" aria-label="World strategy map"></svg></div><div class="mapHint" id="mapHint">Click a country to inspect it · drag to pan · wheel/pinch to zoom</div></section>
 <aside id="side">
 <section class="panel card fullSide"><h3>Game Room</h3><div class="roomForm"><input id="name" maxlength="20" placeholder="Your name"><input id="code" maxlength="6" placeholder="ROOM CODE"></div><div class="roomButtons"><button id="create">Create</button><button id="join">Join</button><button id="ready" class="good" disabled>Ready</button></div><div class="roomLine" style="margin-top:8px"><div id="roomLine" class="small">No room connected.</div><div class="actionRow" style="min-width:150px"><button id="copyRoom" class="ghost" disabled>Copy</button><button id="leave" class="danger" disabled>Leave</button></div></div><div class="roomLine" style="margin-top:9px"><span id="hostLine" class="small">Host: —</span><button id="startSelection" class="primary" disabled>Choose Countries</button></div></section>
-<section class="panel card fullSide"><div class="roomLine"><h3 style="margin:0">Match Status</h3><span id="dataBadge" class="badge">WORLD</span></div><div class="small" id="dataNote" style="margin-top:6px">Loading world data and scenario presets.</div><div class="turnBanner" style="margin-top:9px"><div><b id="turnLabel">Lobby</b> <span id="turnHint" class="small">Choose a scenario, then select countries.</span></div><div class="turnProgress"><i id="turnProgress" style="width:0%"></i></div></div><div class="statGrid" style="margin-top:9px"><div class="stat"><div class="k">My territories</div><div id="myCountries" class="v">0</div></div><div class="stat"><div class="k">AI powers</div><div id="aiCount" class="v">0</div></div><div class="stat"><div class="k">Total claimed</div><div id="totalClaimed" class="v">0</div></div><div class="stat"><div class="k">My treasury</div><div id="myFunds" class="v">—</div></div></div><div class="countryActions"><button id="recruit" class="good" disabled>Recruit +6</button><button id="endTurn" class="primary" disabled>End Turn</button></div></section>
+<section class="panel card fullSide"><div class="roomLine"><h3 style="margin:0">Match Status</h3><span id="dataBadge" class="badge">WORLD</span></div><div class="small" id="dataNote" style="margin-top:6px">Loading world data and scenario presets.</div><div class="turnBanner" style="margin-top:9px"><div><b id="turnLabel">Lobby</b> <span id="turnHint" class="small">Choose your country to begin.</span></div><div class="turnProgress"><i id="turnProgress" style="width:0%"></i></div></div><div class="statGrid" style="margin-top:9px"><div class="stat"><div class="k">My territories</div><div id="myCountries" class="v">0</div></div><div class="stat"><div class="k">AI powers</div><div id="aiCount" class="v">0</div></div><div class="stat"><div class="k">Total claimed</div><div id="totalClaimed" class="v">0</div></div><div class="stat"><div class="k">My treasury</div><div id="myFunds" class="v">—</div></div></div><div class="countryActions"><button id="recruit" class="good" disabled>Recruit +6</button><button id="endTurn" class="primary" disabled>End Turn</button></div></section>
 <section class="panel card"><h3>Players Online</h3><div id="players" class="players"><div class="small">No players yet.</div></div></section>
 <section class="panel card"><h3>Activity</h3><div id="activity" class="activity"><div class="small">Game events will appear here.</div></div></section>
 <section id="countryCard" class="panel card"><h3>Country Intel</h3><div class="small">Select a country on the map.</div></section>
@@ -343,13 +343,11 @@ const $=id=>document.getElementById(id);
 const myId=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now());
 const roomColors=['#61c7ff','#7ee2a8','#f5ce5d','#ff7890','#c4b5fd','#fdba74','#67e8f9','#a7f3d0'];
 const resourceNames=[['oil','Oil'],['gas','Gas'],['coal','Coal'],['iron','Iron'],['uranium','Uranium'],['rare','Rare earths'],['timber','Timber'],['fish','Fish']];
-const layers=[['overview','Overview'],['scenario','Scenario'],['fertility','Fertility'],['population','Population'],['wealth','GDP'],['resources','Resources']];
+const layers=[['overview','Overview'],['fertility','Fertility'],['population','Population'],['wealth','GDP'],['resources','Resources']];
 const SCENARIOS={
- modern:{label:'MODERN',name:'Modern World',year:'2026',desc:'A contemporary world with every country starting as its own AI power unless chosen by a player.',factions:{}},
- ww1:{label:'WWI',name:'World War I · 1914',year:'1914',desc:'A Great War preset with Central Powers, Entente and neutral blocs.',factions:{central:['DEU','AUT','HUN','TUR','BGR'],entente:['GBR','FRA','RUS','ITA','BEL','SRB','ROU','GRC','JPN','USA','PRT','CAN','AUS','NZL','ZAF'],neutral:[]}},
- ww2:{label:'WWII',name:'World War II · 1939',year:'1939',desc:'A Second World War preset with Axis, Allies and neutral countries.',factions:{axis:['DEU','ITA','JPN','HUN','ROU','BGR','SVK'],allies:['GBR','FRA','POL','USA','USSR','CHN','CAN','AUS','NZL','IND','ZAF','NOR','NLD','BEL','GRC','YUG'],neutral:[]}}
+ modern:{label:'PRESENT DAY',name:'Present Day',year:'2026',desc:'A contemporary world with every country starting as its own AI power unless chosen by a player.',factions:{}}
 };
-const FACTION_LABELS={central:'CENTRAL POWERS',entente:'ENTENTE',axis:'AXIS',allies:'ALLIES',neutral:'NEUTRAL'};
+const FACTION_LABELS={neutral:'NEUTRAL'};
 const state={phase:'lobby',scenario:'modern',turn:0,hostId:null,players:{},choices:{},owners:{},countryState:{},funds:{},done:{},factions:{}};
 let playerName='Player',roomCode='',channel=null,selected=null,world=null,countryData={},mapGroup=null,projection=null,path=null,zoom=null,activeLayer='overview',hostTimer=null;
 let seenEvents=[];
@@ -425,7 +423,7 @@ async function loadWorld(){
   buildMap();
   neighbors=buildNeighborGraph();
   draw();
-  renderScenarioPicker();
+  
   $('dataBadge').textContent='OFFLINE BASELINE';
   $('dataNote').textContent='Bundled world data loaded. Live indicators refresh in the background when reachable.';
   $('startStatus').textContent=supa?'World ready · multiplayer ready':'World ready · solo mode';
@@ -476,7 +474,7 @@ function initGameState(){state.owners={};state.countryState={};state.funds={};st
 for(const owner of new Set(Object.values(state.owners))){state.funds[owner]=30;}
 state.phase='game';state.turn=1;for(const pid of Object.keys(state.players))state.done[pid]=false;selected=Object.keys(state.choices).find(k=>state.choices[k]===myId)||Object.keys(state.owners)[0]||null;}
 function ensureAllHumansPicked(){for(const pid of Object.keys(state.players))if(!Object.values(state.choices).includes(pid))return false;return true;}
-function startSelecting(){state.phase='selecting';state.scenario=state.scenario||'modern';state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};for(const p of Object.values(state.players))p.ready=false;selected=null;addActivity('Country selection opened · '+SCENARIOS[state.scenario].name);openPickOverlay();broadcast('state',snapshot());applySnapshot(snapshot());}
+function startSelecting(){state.phase='selecting';state.scenario='modern';state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};for(const p of Object.values(state.players))p.ready=false;selected=null;addActivity('Country selection opened · '+SCENARIOS[state.scenario].name);openPickOverlay();broadcast('state',snapshot());applySnapshot(snapshot());}
 function confirmPick(k){if(!k||!countryData[k])return;if(state.phase!=='selecting')return;sendAction({type:'choose_country',country:k});}
 function countryGlyph(p){
  const c=p.continent||'';
@@ -630,18 +628,13 @@ function startSolo(){playerName=($('startName').value.trim()||'Player').slice(0,
 async function createRoom(code){if(!supa){toast('Multiplayer client failed to load. Use solo or host the files with a valid Supabase project.');return false;}await leaveRoom(false);playerName=($('startName').value.trim()||playerName||'Player').slice(0,20);roomCode=(code||makeCode()).toUpperCase();state.phase='lobby';state.scenario='modern';state.turn=0;state.hostId=myId;state.players={[myId]:{name:playerName,ready:false}};state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};channel=supa.channel('atlas-conquest-'+roomCode,{config:{presence:{key:myId}}});wireChannel();const status=await subscribeChannel();if(status!=='SUBSCRIBED'){await leaveRoom(false);toast('Could not connect to the room service.');return false;}await trackPresence();setConnection(true,'Multiplayer connected');$('startOverlay').classList.add('hidden');addActivity('Created room '+roomCode);showToast('Room '+roomCode+' created');renderPlayers();return true;}
 async function joinRoom(code){if(!supa){toast('Multiplayer client failed to load.');return false;}const c=(code||'').trim().toUpperCase();if(c.length!==6){toast('Enter a 6-character room code.');return false;}await leaveRoom(false);playerName=($('startName').value.trim()||playerName||'Player').slice(0,20);roomCode=c;state.phase='lobby';state.turn=0;state.hostId=null;state.players={[myId]:{name:playerName,ready:false}};state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};channel=supa.channel('atlas-conquest-'+roomCode,{config:{presence:{key:myId}}});wireChannel();const status=await subscribeChannel();if(status!=='SUBSCRIBED'){await leaveRoom(false);toast('Could not connect to the room.');return false;}await trackPresence();await broadcast('request_state',{from:myId});setConnection(true,'Connected · waiting for host');$('startOverlay').classList.add('hidden');addActivity('Joined room '+roomCode);return true;}
 
-function renderScenarioPicker(){
- // Scenario selection is intentionally on the start screen only for host; it appears as a compact picker in the lobby.
- let existing=document.getElementById('scenarioPanel');if(existing)return;const card=document.createElement('section');card.id='scenarioPanel';card.className='panel card fullSide';card.innerHTML='<div class="roomLine"><h3 style="margin:0">Scenario</h3><span class="badge">HOST CHOICE</span></div><div class="grid3" style="margin-top:8px">'+Object.entries(SCENARIOS).map(([k,v])=>'<button data-scenario="'+k+'" class="scenarioMini">'+v.label+' · '+v.year+'</button>').join('')+'</div><div id="scenarioDesc" class="small" style="margin-top:7px"></div>';document.getElementById('side').prepend(card);card.querySelectorAll('[data-scenario]').forEach(b=>b.onclick=()=>sendAction({type:'scenario',scenario:b.dataset.scenario}));updateScenarioPanel();}
-function updateScenarioPanel(){const card=document.getElementById('scenarioPanel');if(!card)return;card.querySelectorAll('[data-scenario]').forEach(b=>{b.classList.toggle('primary',b.dataset.scenario===state.scenario);b.disabled=state.hostId!==myId||state.phase!=='lobby';});$('scenarioDesc').textContent=SCENARIOS[state.scenario].desc;}
-
 function draw(){drawCountries();updateLegend();renderPlayers();renderGameText();if(selected&&countryData[selected]&&state.phase!=='selecting')renderIntel(countryData[selected],selected);countClaims();}
 
 $('startSolo').onclick=()=>startSolo();
-$('startCreate').onclick=async()=>{playerName=($('startName').value.trim()||'Player').slice(0,20);$('name').value=playerName;await createRoom();renderScenarioPicker();};
-$('startJoin').onclick=async()=>{playerName=($('startName').value.trim()||'Player').slice(0,20);$('name').value=playerName;await joinRoom($('startRoomCode').value);renderScenarioPicker();};
-$('create').onclick=async()=>{playerName=($('name').value.trim()||'Player').slice(0,20);$('startName').value=playerName;await createRoom($('code').value.trim()||undefined);renderScenarioPicker();};
-$('join').onclick=async()=>{playerName=($('name').value.trim()||'Player').slice(0,20);$('startName').value=playerName;await joinRoom($('code').value.trim());renderScenarioPicker();};
+$('startCreate').onclick=async()=>{playerName=($('startName').value.trim()||'Player').slice(0,20);$('name').value=playerName;await createRoom();};
+$('startJoin').onclick=async()=>{playerName=($('startName').value.trim()||'Player').slice(0,20);$('name').value=playerName;await joinRoom($('startRoomCode').value);};
+$('create').onclick=async()=>{playerName=($('name').value.trim()||'Player').slice(0,20);$('startName').value=playerName;await createRoom($('code').value.trim()||undefined);};
+$('join').onclick=async()=>{playerName=($('name').value.trim()||'Player').slice(0,20);$('startName').value=playerName;await joinRoom($('code').value.trim());};
 $('ready').onclick=async()=>{const next=!state.players[myId]?.ready;state.players[myId]={...(state.players[myId]||{}),name:playerName,ready:next};if(channel)await trackPresence();$('ready').textContent=next?'Unready':'Ready';renderPlayers();};
 $('startSelection').onclick=()=>sendAction({type:'start_selection'});
 $('copyRoom').onclick=async()=>{try{await navigator.clipboard.writeText(roomCode);toast('Room code copied.');}catch(e){toast('Room code: '+roomCode);}};
