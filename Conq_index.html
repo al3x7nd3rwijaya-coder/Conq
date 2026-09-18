@@ -1,0 +1,660 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Conq</title>
+<style>
+:root{--bg:#07101b;--panel:#0e1a2a;--panel2:#13243a;--line:#29415e;--text:#eef5ff;--muted:#91a7bf;--accent:#5dc7ff;--good:#78e2a5;--warn:#f5cf63;--danger:#ff7f97;--shadow:0 20px 70px rgba(0,0,0,.38)}
+*{box-sizing:border-box}html,body{height:100%;margin:0}body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 50% -10%,#1b3b5d 0,#09121f 45%,#050a10 100%);color:var(--text);overflow:hidden}button,input,select{font:inherit}button{border:1px solid #385370;background:#172b43;color:#f8fbff;border-radius:10px;padding:9px 12px;cursor:pointer;font-weight:800;transition:.14s}button:hover{transform:translateY(-1px);background:#203b59}button:active{transform:none}button:disabled{opacity:.42;cursor:not-allowed;transform:none}button.primary{background:linear-gradient(135deg,#218dd0,#165e93);border-color:#64cbff}button.good{background:#15513b;border-color:#2b9c6d}button.danger{background:#4b2330;border-color:#844052}button.ghost{background:transparent}.small{font-size:11px;color:var(--muted);line-height:1.45}.mono{font-variant-numeric:tabular-nums;font-family:ui-monospace,SFMono-Regular,Menlo,monospace}.hidden{display:none!important}.pill{font-size:10px;color:#c0d1e4;border:1px solid #2a4563;background:#0b1726;padding:5px 8px;border-radius:999px;white-space:nowrap}.badge{font-size:9px;padding:4px 6px;border-radius:999px;border:1px solid #2a425e;background:#0a1524;color:#a9bfd4}.badge.ready{border-color:#2b9b70;color:#86e4af}.topbar{height:58px;display:flex;align-items:center;gap:9px;padding:8px 12px;background:rgba(7,15,26,.95);border-bottom:1px solid #203751;z-index:20}.brand{font-weight:950;font-size:16px;letter-spacing:1px;white-space:nowrap}.live{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:10px;white-space:nowrap}.liveDot{width:8px;height:8px;border-radius:50%;background:#65748a}.liveDot.on{background:var(--good);box-shadow:0 0 12px rgba(120,226,165,.55)}.spacer{flex:1}.roomPill{max-width:150px;overflow:hidden;text-overflow:ellipsis}
+#app{height:100%;display:grid;grid-template-rows:auto 1fr}main{min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 375px;gap:10px;padding:10px}.panel{background:linear-gradient(180deg,rgba(16,30,48,.97),rgba(8,18,31,.99));border:1px solid #243d59;border-radius:15px;box-shadow:var(--shadow)}
+#mapPanel{position:relative;min-height:0;overflow:hidden}.mapTools{position:absolute;left:10px;right:10px;top:10px;z-index:4;display:flex;align-items:flex-start;gap:6px;pointer-events:none}.mapTools>*{pointer-events:auto}.layerbar{display:flex;flex-wrap:wrap;gap:5px;max-width:calc(100% - 42px)}.layerbar button{font-size:10px;padding:7px 9px;background:rgba(7,15,25,.91)}.layerbar button.active{border-color:var(--accent);background:#10354c;box-shadow:0 0 0 1px rgba(93,199,255,.24) inset}.reset{width:34px;height:34px;padding:0;border-radius:50%;margin-left:auto}.mapWrap{position:absolute;inset:0;background:linear-gradient(#9fcce4,#c7dfd0 52%,#bbd6ac)}#map{width:100%;height:100%;touch-action:none}.water{fill:#9fcce4}.country{stroke:#31475e;stroke-width:.7;vector-effect:non-scaling-stroke;cursor:pointer;transition:filter .1s}.country:hover{stroke:#fff;stroke-width:1.8;filter:brightness(1.08)}.country.selected{stroke:#fff;stroke-width:2.7;filter:brightness(1.12)}.country.selfOwned{stroke:#fff;stroke-width:1.8}.country.locked{stroke:#ffcf61;stroke-width:1.6}.mapHint{position:absolute;left:10px;bottom:10px;z-index:4;background:rgba(6,13,22,.88);border:1px solid #2d4967;border-radius:9px;padding:7px 9px;color:#c2d5e8;font-size:10px}.legend{position:absolute;right:10px;bottom:10px;z-index:4;background:rgba(6,13,22,.9);border:1px solid #2d4967;border-radius:9px;padding:7px 8px;display:flex;gap:8px;flex-wrap:wrap;font-size:10px;color:#a9bed4}.legend span{display:flex;align-items:center;gap:4px}.swatch{width:14px;height:9px;border-radius:3px;display:inline-block;border:1px solid #47627d}.tooltip{position:fixed;pointer-events:none;z-index:200;display:none;min-width:185px;background:#07111d;border:1px solid #3c5977;border-radius:10px;padding:8px 10px;box-shadow:0 14px 30px rgba(0,0,0,.48)}.tooltip b{display:block;margin-bottom:3px}.tooltip span{display:block;color:#a4b9cf;font-size:10px}
+#side{min-width:0;min-height:0;display:flex;flex-direction:column;gap:10px;overflow:auto}.card{padding:12px}.card h3,.card h4{margin:0 0 8px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:7px}.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}.roomLine{display:flex;align-items:center;justify-content:space-between;gap:6px}.roomForm{display:grid;grid-template-columns:1.1fr .9fr;gap:7px}.roomButtons{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:7px}.actionRow{display:flex;gap:6px}.actionRow>*{flex:1}.statGrid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.stat{background:#091523;border:1px solid #223a55;border-radius:10px;padding:8px}.stat .k{font-size:9px;color:#8da4bc;text-transform:uppercase;letter-spacing:.5px}.stat .v{font-size:14px;font-weight:900;margin-top:2px}.players{max-height:175px;overflow:auto}.player{display:flex;align-items:center;justify-content:space-between;padding:7px 0;border-bottom:1px solid #1b3046;font-size:12px}.player:last-child{border-bottom:0}.playerName{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.playerMeta{font-size:9px;color:#7f97b0}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:7px;vertical-align:middle}.activity{max-height:115px;overflow:auto}.event{font-size:10px;color:#aabfd3;padding:5px 0;border-bottom:1px solid #193047}.resourceGrid{display:grid;grid-template-columns:1fr 1fr;gap:6px}.resource{background:#091523;border:1px solid #203850;border-radius:9px;padding:7px}.resource .rname{font-size:9px;color:#8ea6bd}.resource .rv{font-size:13px;font-weight:900}.meter{height:7px;background:#08111d;border:1px solid #263e59;border-radius:999px;overflow:hidden;margin-top:5px}.meter i{display:block;height:100%;background:linear-gradient(90deg,#4d7aa8,#5fc8ff);border-radius:999px}.countryActions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:10px}.turnBanner{background:#091625;border:1px solid #2b4562;border-radius:10px;padding:8px}.turnBanner b{font-size:12px}.turnProgress{height:6px;margin-top:5px;background:#07111c;border-radius:999px;overflow:hidden}.turnProgress i{display:block;height:100%;background:linear-gradient(90deg,#55c9ff,#85e4ad)}
+#startOverlay,#pickOverlay{position:fixed;inset:0;z-index:100;background:radial-gradient(circle at 50% 28%,rgba(31,84,129,.68),rgba(3,8,15,.985) 64%);display:flex;align-items:center;justify-content:center;padding:18px}.startBox,.pickBox{width:min(980px,97vw);max-height:92vh;overflow:auto;background:linear-gradient(180deg,rgba(18,38,61,.99),rgba(7,14,24,.995));border:1px solid #385572;border-radius:24px;box-shadow:0 30px 110px rgba(0,0,0,.62);padding:26px}.startBox{width:min(840px,97vw)}.eyebrow{font-size:10px;letter-spacing:2.7px;color:var(--accent);font-weight:950;text-align:center}.startBox h1{text-align:center;font-size:clamp(34px,7vw,64px);margin:6px 0 4px;letter-spacing:-1.7px}.startBox>p{text-align:center;max-width:720px;margin:0 auto;color:#b0c7dd;line-height:1.5;font-size:13px}.features{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:18px 0}.feature{padding:11px;border:1px solid #29435e;background:#0a1625;border-radius:11px;font-size:10px;color:#bdcfe0;text-align:center}.startSetup{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:14px auto;max-width:650px}.startSetup .full{grid-column:1/-1}.startActions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.bigStart{min-width:180px;padding:13px 18px;font-size:15px}.scenarioTitle{text-align:center;margin-bottom:14px}.scenarioTitle h2{margin:5px 0;font-size:28px}.scenarioTitle p{margin:0 auto;color:#9eb4ca;font-size:12px;max-width:700px}.scenarioGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.scenario{padding:15px;border:1px solid #2b4562;background:#091626;border-radius:15px;text-align:left;cursor:pointer;transition:.15s}.scenario:hover{background:#102337;transform:translateY(-1px)}.scenario.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(93,199,255,.25) inset}.scenario .year{font-size:10px;color:var(--accent);font-weight:900;letter-spacing:1px}.scenario h3{margin:5px 0 4px;font-size:18px}.scenario p{margin:0;color:#9eb3c8;font-size:10px;line-height:1.45}.pickHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.pickHeader h2{margin:0;font-size:27px}.pickHeader p{margin:5px 0 0;color:#a5bad0;font-size:11px}.pickGrid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:10px;margin-top:15px}.countrySearch{width:100%;padding:10px 12px;background:#081421;border:1px solid #29425e;border-radius:10px;color:var(--text);outline:none}.countryList{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:48vh;overflow:auto;padding-right:2px}.countryOption{text-align:left;background:#0a1726;border:1px solid #223c57;border-radius:10px;padding:9px;cursor:pointer}.countryOption:hover{background:#10263b}.countryOption.active{border-color:var(--accent);box-shadow:0 0 0 1px rgba(93,199,255,.24) inset}.countryOption.locked{opacity:.45}.countryOption .n{font-weight:850;font-size:11px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.countryOption .m{font-size:9px;color:#8ea6be;display:block;margin-top:2px}.pickCard{background:#091523;border:1px solid #253f5a;border-radius:14px;padding:13px}.pickCard h3{margin:0 0 7px}.pickPreview{min-height:175px}.flagBox{height:68px;border-radius:12px;background:linear-gradient(135deg,#11263c,#0a1524);display:flex;align-items:center;justify-content:center;font-size:35px;border:1px solid #27415c}.pickActions{display:flex;gap:7px;margin-top:10px}.pickActions>*{flex:1}.lobbyRow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-top:12px}.selectHint{padding:9px 10px;background:#091523;border:1px solid #243e5a;border-radius:10px;font-size:10px;color:#a9bed3}.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:250;background:#07121e;border:1px solid #35516e;border-radius:10px;padding:9px 12px;color:#dbe9f7;box-shadow:0 14px 35px rgba(0,0,0,.4);font-size:11px;display:none}
+@media(max-width:1050px){main{grid-template-columns:1fr;grid-template-rows:minmax(52vh,1fr) auto}#side{display:grid;grid-template-columns:1fr 1fr;overflow:visible}.fullSide{grid-column:1/-1}.pickGrid{grid-template-columns:1fr}.pickCard{order:-1}.countryList{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:650px){body{overflow:auto}.topbar{position:sticky;top:0}.topbar .pill{display:none}main{padding:6px;gap:6px}#side{display:flex}.features{grid-template-columns:1fr 1fr}.startSetup{grid-template-columns:1fr}.startSetup .full{grid-column:auto}.scenarioGrid{grid-template-columns:1fr}.countryList{grid-template-columns:repeat(2,1fr)}.startBox,.pickBox{padding:19px 14px}.mapHint{max-width:72%}}
+
+/* Conq 2.0 polish */
+:root{
+  --accent2:#8b7cff;--surface:#0b1727;--surface2:#101f33;
+  --focus:#9de2ff;--radius:14px;
+}
+button,input{outline:none}
+button:focus-visible,input:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+button{min-height:38px}
+.topbar{backdrop-filter:blur(12px)}
+.brand{display:flex;align-items:center;gap:8px}
+.brandMark{width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:linear-gradient(135deg,#2aa7ed,#766cff);box-shadow:0 7px 22px rgba(50,150,240,.22);font-size:15px}
+.kicker{font-size:9px;color:#8fa8c2;letter-spacing:1.4px;font-weight:800}
+.card{transition:border-color .18s ease,transform .18s ease}
+.card:hover{border-color:#315273}
+.countryActions button{min-height:42px}
+.actionPrimary{box-shadow:0 8px 24px rgba(31,141,208,.16)}
+.gameHelp{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}
+.helpItem{padding:9px;background:#091625;border:1px solid #243d58;border-radius:10px}
+.helpItem b{display:block;font-size:10px;margin-bottom:3px}.helpItem span{font-size:9px;color:#91a7bf;line-height:1.4}
+.statusChip{display:inline-flex;align-items:center;gap:5px}
+.statusChip i{width:6px;height:6px;border-radius:50%;background:#78e2a5}
+#helpOverlay{position:fixed;inset:0;z-index:180;background:rgba(2,7,13,.82);backdrop-filter:blur(7px);display:flex;align-items:center;justify-content:center;padding:18px}
+.helpBox{width:min(720px,96vw);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#12243a,#081321);border:1px solid #385572;border-radius:20px;padding:22px;box-shadow:0 30px 100px rgba(0,0,0,.6)}
+.helpBox h2{margin:0 0 5px}.helpBox>p{color:#9fb5cb;font-size:11px;line-height:1.5}
+.helpGrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}.helpStep{padding:11px;border:1px solid #29435e;background:#091625;border-radius:12px}.helpStep b{font-size:11px}.helpStep div{font-size:10px;color:#9eb4ca;line-height:1.45;margin-top:3px}
+.helpClose{display:flex;justify-content:flex-end;margin-top:12px}
+#helpBtn{min-width:38px;padding:0;border-radius:10px}
+@media(max-width:650px){.gameHelp,.helpGrid{grid-template-columns:1fr}.helpBox{padding:16px}}
+
+
+/* Conq 3.0 — faster startup + country draft UI */
+.startStatus{min-height:18px}
+.startError{margin:10px auto 0;max-width:650px;padding:10px 12px;border:1px solid #7a3f4a;background:#2b1420;border-radius:11px;color:#ffd7de;font-size:10px;line-height:1.45;text-align:left}
+.startRetryRow{display:flex;justify-content:center;margin-top:8px}
+.pickBox{width:min(1100px,97vw)}
+.pickTop{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+.pickTop h2{margin:2px 0 4px;font-size:30px;letter-spacing:-.4px}
+.pickTop p{margin:0;color:#a5bad0;font-size:11px;max-width:670px}
+.pickTopRight{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.pickSteps{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.pickSteps span{font-size:9px;color:#7f97ae;padding:5px 7px;border:1px solid #243b55;background:#0a1523;border-radius:999px}
+.pickSteps .active{color:#d8f4ff;border-color:#4e9fc5;background:#0d2636}
+.pickStats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}
+.pickStat{background:#091624;border:1px solid #223d58;border-radius:11px;padding:9px 10px}
+.pickStat b{display:block;font-size:16px;line-height:1.05}
+.pickStat span{display:block;color:#849cb5;font-size:8px;margin-top:4px;text-transform:uppercase;letter-spacing:.6px}
+.pickStat.accentStat{border-color:#3d6784;background:linear-gradient(180deg,#0d2132,#091624)}
+.pickStat.accentStat b{font-size:11px;color:#bfe9ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pickToolbar{display:grid;grid-template-columns:minmax(0,1fr) 165px 165px;gap:7px}
+.searchWrap{display:flex;align-items:center;gap:6px;background:#081421;border:1px solid #29425e;border-radius:10px;padding:0 9px}
+.searchWrap>span{color:#6f8da8;font-size:15px}
+.searchWrap .countrySearch{border:0;padding:10px 0;background:transparent}
+.countryFilter{width:100%;padding:9px 10px;background:#081421;border:1px solid #29425e;border-radius:10px;color:var(--text)}
+.pickBrowseHead{display:flex;justify-content:space-between;margin-top:10px;color:#7892ac;font-size:8px;letter-spacing:1px;font-weight:850}
+.countryList{grid-template-columns:repeat(4,minmax(0,1fr));max-height:48vh;padding-right:2px}
+.countryOption{position:relative;min-height:67px;padding:9px 10px;display:flex;flex-direction:column;justify-content:space-between}
+.countryOption .rowTop{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+.countryOption .code{font-size:8px;color:#7090ad;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.7px}
+.countryOption .meta{font-size:8px;color:#7894ad;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.countryOption .badgeMini{align-self:flex-start;margin-top:5px;font-size:8px;color:#82a0bb}
+.countryOption.mine{border-color:#5dc7ff;box-shadow:0 0 0 1px rgba(93,199,255,.22) inset}
+.countryOption.locked{filter:saturate(.5)}
+.countryOption.locked .badgeMini{color:#e2bb70}
+.countryOption .check{position:absolute;right:8px;bottom:8px;color:#72e1a3;font-size:12px}
+.pickCard{position:sticky;top:0;height:max-content;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+.selectedRibbon{display:flex;justify-content:space-between;align-items:center;color:#7f9ab4;font-size:8px;letter-spacing:1px;font-weight:900;margin-bottom:8px}
+.selectedRibbon span:last-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#b9d5ea}
+.pickPreview{min-height:226px}
+.pickPreview .countryHero{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pickPreview .countryGlyph{width:64px;height:64px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#11263c,#0a1524);border:1px solid #27415c;font-size:29px}
+.pickPreview .pickStatus{font-size:8px;padding:5px 7px;border-radius:999px;border:1px solid #2c526f;color:#9fc8e2}
+.pickPreview .pickStatus.taken{border-color:#7a5733;color:#e4bf77}
+.pickPreview .pickStatus.mine{border-color:#2f8f66;color:#89e5b2}
+.previewStats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}
+.previewStat{background:#07111d;border:1px solid #1e3750;border-radius:9px;padding:7px}
+.previewStat b{display:block;font-size:12px}
+.previewStat span{display:block;color:#7f97b0;font-size:8px;margin-top:2px}
+.pickPlayers{margin-top:9px;max-height:90px;overflow:auto}
+.pickPlayer{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #182d42;font-size:9px}
+.pickPlayer:last-child{border-bottom:0}
+.pickPlayer .state{font-size:8px;color:#88a0b7}
+@media(max-width:1050px){.pickBrowse{order:2}.pickCard{position:static}.pickToolbar{grid-template-columns:minmax(0,1fr) 150px}.countryFilter:last-child{grid-column:1/-1}.countryList{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:650px){.pickTop{flex-direction:column}.pickTopRight{width:100%;align-items:flex-start}.pickSteps{justify-content:flex-start}.pickStats{grid-template-columns:1fr 1fr}.pickToolbar{grid-template-columns:1fr 1fr}.searchWrap{grid-column:1/-1}.countryList{grid-template-columns:repeat(2,minmax(0,1fr));max-height:41vh}.countryOption{min-height:72px}.pickBox{padding:16px 12px}.pickTop h2{font-size:24px}}
+
+/* Strategy expansion */
+.strategyPanel{margin-top:10px}
+.strategyGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:8px}
+.strategyBtn{text-align:left;padding:10px;border:1px solid #29435e;background:#091625;border-radius:11px;cursor:pointer;color:inherit}
+.strategyBtn:hover{border-color:#4a7096;background:#0d1d2e}
+.strategyBtn:disabled{opacity:.42;cursor:not-allowed}
+.strategyBtn b{display:block;font-size:10px}
+.strategyBtn span{display:block;font-size:8px;color:#8fa7bf;margin-top:3px;line-height:1.35}
+.statStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-top:8px}
+.statBox{background:#091625;border:1px solid #243d58;border-radius:9px;padding:7px}
+.statBox b{display:block;font-size:12px}
+.statBox span{font-size:8px;color:#829bb5}
+.badge.gold{border-color:#80662c;color:#e4c66c}
+.badge.red{border-color:#743a40;color:#f29b9b}
+.eventBanner{margin-top:8px;padding:10px 11px;border-radius:11px;border:1px solid #425b78;background:#0b1a2a;font-size:9px;line-height:1.4}
+.eventBanner strong{display:block;font-size:10px;margin-bottom:2px}
+.logBox{max-height:130px;overflow:auto;font-size:9px;line-height:1.45;color:#90a7bf}
+.logBox div{padding:3px 0;border-bottom:1px solid #162b40}
+@media(max-width:650px){
+ .strategyGrid{grid-template-columns:1fr}
+ .statStrip{grid-template-columns:repeat(2,1fr)}
+}
+
+
+/* Present-day country selection */
+#pickOverlay{z-index:500}
+#pickOverlay:not(.hidden){display:flex!important}
+#startOverlay{z-index:600}
+@media(max-width:760px){.pickGrid{grid-template-columns:1fr}.countryList{max-height:38vh}}
+</style>
+</head>
+<body>
+<div id="startOverlay">
+ <div class="startBox">
+  <div class="eyebrow">CONQ · PRESENT DAY</div>
+  <h1>CHOOSE A COUNTRY</h1>
+  <p>Start in the present day. Choose any country, manage your economy, make diplomatic decisions, build your military and expand your influence across a living world map.</p>
+  <div class="features"><div class="feature">🌍 177 countries</div><div class="feature">⚔️ Conquest combat</div><div class="feature">🤖 AI world powers</div><div class="feature">🤝 Diplomacy</div></div>
+  <div class="startSetup"><input id="startName" class="full" maxlength="20" placeholder="Your player name"></div>
+  <div class="startActions"><button id="startSolo" class="primary bigStart">CHOOSE COUNTRY</button></div>
+  <div id="startStatus" class="small startStatus" style="text-align:center;margin-top:12px">Loading present-day world…</div>
+  <div id="startError" class="startError hidden" role="alert"></div>
+  <div class="startRetryRow"><button id="startRetry" class="ghost hidden">↻ Retry world loading</button></div>
+ </div>
+</div>
+
+<div id="pickOverlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="pickTitle">
+ <div class="pickBox">
+  <div class="pickTop">
+   <div>
+    <div class="eyebrow" style="text-align:left">CONQ · COUNTRY DRAFT</div>
+    <h2 id="pickTitle">Choose your country</h2>
+    <p id="pickSubtitle">Pick one country. Human players cannot choose the same country.</p>
+   </div>
+   <div class="pickTopRight">
+    <div class="badge" id="pickPhaseBadge">COUNTRY SELECT</div>
+    <div class="pickSteps" aria-label="Country selection steps"><span class="step active">1 Pick</span><span>2 Lock</span><span>3 Launch</span></div>
+   </div>
+  </div>
+  <div class="pickStats">
+   <div class="pickStat"><b id="availableCount">0</b><span>Available</span></div>
+   <div class="pickStat"><b id="claimedCount">0</b><span>Chosen</span></div>
+   <div class="pickStat"><b id="playerCountPick">0</b><span>Players</span></div>
+   <div class="pickStat accentStat"><b id="myPickLabel">NONE</b><span>Your pick</span></div>
+  </div>
+  <div class="pickGrid">
+   <div class="pickBrowse">
+    <div class="pickToolbar">
+     <div class="searchWrap"><span aria-hidden="true">⌕</span><input id="countrySearch" class="countrySearch" placeholder="Search country…" autocomplete="off"></div>
+     <select id="countryRegion" class="countryFilter" aria-label="Filter by continent">
+      <option value="all">All continents</option>
+     </select>
+     <select id="countryAvailability" class="countryFilter" aria-label="Filter by availability">
+      <option value="all">All countries</option>
+      <option value="available">Available only</option>
+      <option value="mine">My pick</option>
+      <option value="taken">Taken</option>
+     </select>
+    </div>
+    <div class="pickBrowseHead"><span>COUNTRIES</span><span id="countryListMeta">177 nations</span></div>
+    <div id="countryList" class="countryList" style="margin-top:8px"></div>
+   </div>
+   <div class="pickCard">
+    <div class="selectedRibbon"><span>SELECTED</span><span id="selectedCode">—</span></div>
+    <div id="pickPreview" class="pickPreview"><h3>Select a country</h3><div class="small">Tap a country card to preview it before locking your choice.</div></div>
+    <div id="pickPlayers" class="pickPlayers"></div>
+    <div class="pickActions"><button id="confirmCountry" class="primary actionPrimary" disabled>LOCK COUNTRY</button><button id="pickRandom">RANDOM</button></div>
+    <div id="launchNote" class="selectHint" style="margin-top:9px">Waiting for players…</div>
+    <div class="pickActions" style="margin-top:8px"><button id="launchGame" class="good hidden">LAUNCH GAME</button><button id="closePick" class="ghost">BACK TO LOBBY</button></div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div id="app">
+<header class="topbar"><div class="brand"><span class="brandMark" aria-hidden="true">◎</span><span>CONQ</span><span class="kicker">WORLD STRATEGY</span></div><div class="live"><i id="liveDot" class="liveDot"></i><span id="status">Offline</span></div><div class="spacer"></div><div id="scenarioPill" class="pill">PRESENT DAY · 2026</div><div id="roomPill" class="pill roomPill hidden">ROOM —</div><div id="turnPill" class="pill">LOBBY</div><div id="playerPill" class="pill">0 ONLINE</div></header>
+<main>
+<section id="mapPanel" class="panel"><div class="mapTools"><div id="layers" class="layerbar"></div><button id="resetZoom" class="reset" title="Reset map">↺</button></div><div class="mapWrap"><svg id="map" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet" aria-label="World strategy map"></svg></div><div class="mapHint" id="mapHint">Click a country to inspect it · drag to pan · wheel/pinch to zoom</div></section>
+<aside id="side">
+<section class="panel card fullSide"><h3>Game Room</h3><div class="roomForm"><input id="name" maxlength="20" placeholder="Your name"><input id="code" maxlength="6" placeholder="ROOM CODE"></div><div class="roomButtons"><button id="create">Create</button><button id="join">Join</button><button id="ready" class="good" disabled>Ready</button></div><div class="roomLine" style="margin-top:8px"><div id="roomLine" class="small">No room connected.</div><div class="actionRow" style="min-width:150px"><button id="copyRoom" class="ghost" disabled>Copy</button><button id="leave" class="danger" disabled>Leave</button></div></div><div class="roomLine" style="margin-top:9px"><span id="hostLine" class="small">Host: —</span><button id="startSelection" class="primary" disabled>Choose Countries</button></div></section>
+<section class="panel card fullSide"><div class="roomLine"><h3 style="margin:0">Match Status</h3><span id="dataBadge" class="badge">WORLD</span></div><div class="small" id="dataNote" style="margin-top:6px">Loading world data and scenario presets.</div><div class="turnBanner" style="margin-top:9px"><div><b id="turnLabel">Lobby</b> <span id="turnHint" class="small">Choose your country to begin.</span></div><div class="turnProgress"><i id="turnProgress" style="width:0%"></i></div></div><div class="statGrid" style="margin-top:9px"><div class="stat"><div class="k">My territories</div><div id="myCountries" class="v">0</div></div><div class="stat"><div class="k">AI powers</div><div id="aiCount" class="v">0</div></div><div class="stat"><div class="k">Total claimed</div><div id="totalClaimed" class="v">0</div></div><div class="stat"><div class="k">My treasury</div><div id="myFunds" class="v">—</div></div></div><div class="countryActions"><button id="recruit" class="good" disabled>Recruit +6</button><button id="endTurn" class="primary" disabled>End Turn</button></div></section>
+<section class="panel card"><h3>Players Online</h3><div id="players" class="players"><div class="small">No players yet.</div></div></section>
+<section class="panel card"><h3>Activity</h3><div id="activity" class="activity"><div class="small">Game events will appear here.</div></div></section>
+<section id="countryCard" class="panel card"><h3>Country Intel</h3><div class="small">Select a country on the map.</div></section>
+</aside></main></div>
+<div id="tooltip" class="tooltip"></div>
+<div id="helpOverlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+ <div class="helpBox">
+  <h2 id="helpTitle">How to Play Conq</h2>
+  <p>Build an empire across the world map. Human players choose unique countries; every unchosen country becomes an AI power.</p>
+  <div class="helpGrid">
+   <div class="helpStep"><b>① Create or join</b><div>Use Solo for a local match, or Create Room / Join Room for multiplayer.</div></div>
+   <div class="helpStep"><b>② Choose a country</b><div>Search the list or click the map. Lock your pick before the host launches.</div></div>
+   <div class="helpStep"><b>③ Manage your economy</b><div>Use your treasury to recruit troops and fortify borders.</div></div>
+   <div class="helpStep"><b>④ Conquer neighbors</b><div>Click your territory, then an adjacent enemy territory to attack.</div></div>
+   <div class="helpStep"><b>⑤ End your turn</b><div>Once everyone finishes, income is generated and AI powers take their turns.</div></div>
+   <div class="helpStep"><b>⑥ Explore the map</b><div>Switch layers to compare population, GDP, fertility and resources.</div></div>
+  </div>
+  <div class="helpClose"><button id="closeHelp" class="primary">Got it</button></div>
+ </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+/* Conq Strategy Expansion */
+(function(){
+  const S = window.atlasStrategy = {
+    forts:Object.create(null),
+    dev:Object.create(null),
+    morale:Object.create(null),
+    pacts:Object.create(null),
+    log:[],
+    ensure(c){
+      if(!c) return;
+      if(this.forts[c] == null) this.forts[c]=0;
+      if(this.dev[c] == null) this.dev[c]=0;
+      if(this.morale[c] == null) this.morale[c]=70;
+    },
+    selected(){
+      return (typeof selected !== 'undefined') ? selected : null;
+    },
+    owned(c){
+      return !!(c && typeof state !== 'undefined' && state.owners && typeof myId !== 'undefined' && state.owners[c]===myId);
+    },
+    funds(){
+      try { return typeof myFunds==='function' ? Number(myFunds()) : 0; } catch(e){ return 0; }
+    },
+    setText(id,value){
+      const e=document.getElementById(id);
+      if(e) e.textContent=value;
+    },
+    refresh(){
+      if(typeof state==='undefined') return;
+      const c=this.selected();
+      if(c) this.ensure(c);
+      const own=this.owned(c);
+      const armies=state.armies && c ? (state.armies[c] ?? '—') : '—';
+      const income=state.income && c ? (state.income[c] ?? 0) : '—';
+      this.setText('armyStat',armies);
+      this.setText('incomeStat',c ? ('+'+income+(this.dev[c] ? ' · dev' : '')) : '—');
+      this.setText('moraleStat',c ? ((this.morale[c] ?? 70)+'%') : '—');
+      this.setText('fortStat',c ? ((this.forts[c] ?? 0)+'/3') : '—');
+
+      const costs={buildFort:12,develop:10,mobilize:7,diplomacy:5};
+      Object.keys(costs).forEach(id=>{
+        const b=document.getElementById(id);
+        if(b) b.disabled=!(state.phase==='game' && own && this.funds()>=costs[id]);
+      });
+
+      const banner=document.getElementById('eventBanner');
+      if(banner){
+        if(!c){
+          banner.innerHTML='<strong>World Briefing</strong><span>Select a territory to see strategic options.</span>';
+        }else if(own){
+          const m=this.morale[c] ?? 70;
+          banner.innerHTML='<strong>'+c+' Strategic Briefing</strong><span>Your territory: morale '+m+'%. Consider fortress upgrades near hostile borders or economic development in safe regions.</span>';
+        }else{
+          banner.innerHTML='<strong>'+c+'</strong><span>Enemy territory. Select one of your own territories to issue commands.</span>';
+        }
+      }
+
+      const log=document.getElementById('battleLog');
+      if(log){
+        log.innerHTML=this.log.length
+          ? this.log.slice(-12).reverse().map(x=>'<div>'+x+'</div>').join('')
+          : '<div>No battles yet.</div>';
+      }
+    },
+    spend(n){
+      const c=this.selected();
+      if(!c || !this.owned(c) || this.funds()<n) return false;
+      if(state.treasury && state.treasury[c] != null) state.treasury[c]-=n;
+      return true;
+    },
+    act(type){
+      const c=this.selected();
+      if(!c || !this.owned(c)) return;
+      this.ensure(c);
+      const cost={fort:12,develop:10,mobilize:7,diplomacy:5}[type];
+
+      if(type==='fort'){
+        if(this.forts[c]>=3 || !this.spend(cost)) return;
+        this.forts[c]++;
+        if(state.armies) state.armies[c]=(state.armies[c]||0)+2;
+        this.log.push('🏰 '+c+' fortress upgraded to level '+this.forts[c]+'.');
+      }
+      if(type==='develop'){
+        if(!this.spend(cost)) return;
+        this.dev[c]++;
+        if(state.income) state.income[c]=(state.income[c]||0)+2;
+        this.log.push('📈 '+c+' developed its economy. Income increased by 2.');
+      }
+      if(type==='mobilize'){
+        if(!this.spend(cost)) return;
+        if(state.armies) state.armies[c]=(state.armies[c]||0)+5;
+        this.morale[c]=Math.max(0,(this.morale[c]||70)-4);
+        this.log.push('⚔️ '+c+' mobilized 5 troops. Morale is now '+this.morale[c]+'%.');
+      }
+      if(type==='diplomacy'){
+        if(!this.spend(cost)) return;
+        this.pacts[c]=Date.now()+120000;
+        this.log.push('🤝 '+c+' signed a 2-minute non-aggression pact.');
+      }
+
+      try{ if(typeof render==='function') render(); }catch(e){}
+      this.refresh();
+    }
+  };
+
+  const bind=(id,type)=>{
+    const b=document.getElementById(id);
+    if(b) b.addEventListener('click',()=>S.act(type));
+  };
+  bind('buildFort','fort');
+  bind('develop','develop');
+  bind('mobilize','mobilize');
+  bind('diplomacy','diplomacy');
+
+  setInterval(()=>S.refresh(),700);
+})();
+
+</script><script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<script>
+'use strict';
+const SUPABASE_URL="https://ghllefplmyznjxpencab.supabase.co";
+const SUPABASE_ANON_KEY="sb_publishable_5Y-YCEsZ1lUEvRcyTeTtzw__U7eD8Z0";
+const supa=window.supabase?.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{realtime:{params:{eventsPerSecond:30}}});
+const $=id=>document.getElementById(id);
+const myId=(crypto.randomUUID?crypto.randomUUID():Math.random().toString(36).slice(2)+Date.now());
+const roomColors=['#61c7ff','#7ee2a8','#f5ce5d','#ff7890','#c4b5fd','#fdba74','#67e8f9','#a7f3d0'];
+const resourceNames=[['oil','Oil'],['gas','Gas'],['coal','Coal'],['iron','Iron'],['uranium','Uranium'],['rare','Rare earths'],['timber','Timber'],['fish','Fish']];
+const layers=[['overview','Political'],['fertility','Fertility'],['population','Population'],['wealth','Economy'],['resources','Resources']];
+const SCENARIOS={
+ modern:{label:'PRESENT DAY',name:'Present Day',year:'2026',desc:'A contemporary world with every country starting as its own AI power unless chosen by a player.',factions:{}}
+};
+const FACTION_LABELS={neutral:'NEUTRAL'};
+const state={phase:'lobby',scenario:'modern',turn:0,hostId:null,players:{},choices:{},owners:{},countryState:{},funds:{},done:{},factions:{}};
+let playerName='Player',roomCode='',channel=null,selected=null,world=null,countryData={},mapGroup=null,projection=null,path=null,zoom=null,activeLayer='overview',hostTimer=null;
+let seenEvents=[];
+
+const knownResources={
+ 'RUS':{oil:92,gas:98,coal:86,iron:82,uranium:78,rare:67,timber:96,fish:73},'CAN':{oil:78,gas:79,coal:55,iron:87,uranium:90,rare:63,timber:95,fish:88},'USA':{oil:83,gas:83,coal:71,iron:56,uranium:48,rare:42,timber:72,fish:77},
+ 'SAU':{oil:100,gas:94,coal:8,iron:31,uranium:8,rare:12,timber:3,fish:52},'IRN':{oil:96,gas:95,coal:25,iron:65,uranium:20,rare:28,timber:15,fish:58},'IRQ':{oil:98,gas:85,coal:18,iron:28,uranium:10,rare:10,timber:2,fish:24},'KWT':{oil:100,gas:91,coal:4,iron:10,uranium:3,rare:4,timber:0,fish:31},'ARE':{oil:94,gas:96,coal:8,iron:16,uranium:7,rare:8,timber:1,fish:42},'QAT':{oil:71,gas:100,coal:2,iron:5,uranium:2,rare:3,timber:0,fish:22},
+ 'VEN':{oil:99,gas:82,coal:21,iron:42,uranium:8,rare:10,timber:31,fish:34},'NGA':{oil:91,gas:89,coal:24,iron:21,uranium:14,rare:21,timber:55,fish:62},'DZA':{oil:88,gas:95,coal:17,iron:19,uranium:10,rare:10,timber:8,fish:27},'LBY':{oil:99,gas:76,coal:8,iron:15,uranium:6,rare:7,timber:1,fish:30},'AGO':{oil:89,gas:68,coal:14,iron:32,uranium:8,rare:15,timber:63,fish:55},
+ 'NOR':{oil:93,gas:98,coal:19,iron:30,uranium:6,rare:22,timber:47,fish:96},'MEX':{oil:82,gas:66,coal:24,iron:31,uranium:11,rare:17,timber:48,fish:82},'BRA':{oil:43,gas:49,coal:19,iron:94,uranium:35,rare:51,timber:100,fish:69},'KAZ':{oil:85,gas:83,coal:86,iron:58,uranium:100,rare:36,timber:7,fish:14},'AZE':{oil:86,gas:90,coal:6,iron:19,uranium:4,rare:12,timber:6,fish:36},
+ 'IDN':{oil:53,gas:62,coal:85,iron:34,uranium:4,rare:28,timber:84,fish:100},'AUS':{oil:39,gas:69,coal:100,iron:100,uranium:85,rare:71,timber:29,fish:76},'CHN':{oil:37,gas:51,coal:98,iron:76,uranium:42,rare:100,timber:54,fish:96},'IND':{oil:14,gas:27,coal:90,iron:77,uranium:9,rare:34,timber:49,fish:68},'ZAF':{oil:3,gas:10,coal:91,iron:78,uranium:45,rare:61,timber:33,fish:73},
+ 'POL':{oil:11,gas:19,coal:95,iron:34,uranium:3,rare:8,timber:59,fish:28},'DEU':{oil:7,gas:11,coal:62,iron:36,uranium:2,rare:9,timber:41,fish:26},'UKR':{oil:8,gas:31,coal:66,iron:72,uranium:4,rare:14,timber:47,fish:23},'SWE':{oil:3,gas:5,coal:10,iron:90,uranium:6,rare:24,timber:89,fish:83},'FIN':{oil:2,gas:3,coal:9,iron:22,uranium:3,rare:18,timber:100,fish:71},
+ 'JPN':{oil:1,gas:2,coal:5,iron:2,uranium:1,rare:12,timber:68,fish:95},'KOR':{oil:1,gas:2,coal:6,iron:4,uranium:2,rare:15,timber:31,fish:75},'CHL':{oil:8,gas:12,coal:9,iron:46,uranium:14,rare:23,timber:41,fish:94},'PER':{oil:8,gas:14,coal:16,iron:44,uranium:8,rare:30,timber:47,fish:100},'COL':{oil:45,gas:31,coal:67,iron:23,uranium:6,rare:15,timber:78,fish:73},
+ 'MYS':{oil:36,gas:51,coal:35,iron:21,uranium:4,rare:18,timber:83,fish:78},'VNM':{oil:22,gas:38,coal:43,iron:25,uranium:3,rare:52,timber:73,fish:88},'MMR':{oil:35,gas:59,coal:20,iron:18,uranium:2,rare:67,timber:82,fish:65},'MNG':{oil:4,gas:5,coal:89,iron:35,uranium:27,rare:18,timber:7,fish:3},'NAM':{oil:2,gas:3,coal:4,iron:31,uranium:94,rare:17,timber:9,fish:79},'NER':{oil:7,gas:6,coal:12,iron:19,uranium:100,rare:10,timber:2,fish:12}
+};
+
+function clamp(v,a=0,b=100){return Math.max(a,Math.min(b,v));}
+function hashString(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function noise(s){return(hashString(s)%10000)/10000;}
+function fmtNum(n){if(n==null||!isFinite(n))return '—';if(Math.abs(n)>=1e9)return(n/1e9).toFixed(2)+'B';if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+'M';if(Math.abs(n)>=1e3)return(n/1e3).toFixed(1)+'K';return Math.round(n).toLocaleString();}
+function fmtMoney(m){if(m==null||!isFinite(m))return '—';if(Math.abs(m)>=1e9)return'$'+(m/1e9).toFixed(1)+'B';if(Math.abs(m)>=1e6)return'$'+(m/1e6).toFixed(1)+'M';return'$'+Math.round(m).toLocaleString();}
+function colorFor(pid){return roomColors[hashString(pid)%roomColors.length];}
+function escapeHtml(s){return String(s??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
+function climateFor(lat,continent){const a=Math.abs(lat);if(a<10)return'Equatorial';if(a<23.5)return'Tropical';if(a<35)return'Subtropical';if(a<55)return(continent==='Africa'||continent==='Asia')?'Warm temperate':'Temperate';if(a<66.5)return'Cool temperate';return'Polar/subpolar';}
+function terrainFor(p){const r=noise((p.iso_a3||'')+p.name);const lat=Math.abs(p.center_lat||0);if(r<.22&&lat>15)return'Drylands / plateau';if(r<.48)return lat<30?'Plains / basin':'Plains / rolling hills';if(r<.78)return'Hills / uplands';return'Mountain / rugged';}
+function fallbackFertility(p){const lat=Math.abs(p.center_lat||0);const c=climateFor(lat,p.continent);const base={Equatorial:76,Tropical:68,Subtropical:57,'Warm temperate':61,Temperate:65,'Cool temperate':54,'Polar/subpolar':22}[c]||50;const land=clamp(Math.log10(Math.max(1,p.area_km2))/6*18);return clamp(base+land+(noise((p.name||'')+'fert')*18-9));}
+function resourcesFor(p){const exact=knownResources[p.iso_a3];if(exact)return{...exact};let base={oil:16,gas:14,coal:20,iron:22,uranium:10,rare:18,timber:30,fish:35};if(p.continent==='Africa')Object.assign(base,{oil:26,gas:23,coal:25,iron:33,uranium:24,timber:48,fish:46});if(p.continent==='Asia')Object.assign(base,{oil:29,gas:31,coal:37,iron:34,rare:29,timber:38,fish:56});if(p.continent==='Europe')Object.assign(base,{coal:22,iron:25,timber:38,fish:44});if(p.continent==='North America')Object.assign(base,{oil:34,gas:29,coal:28,iron:31,timber:51,fish:59});if(p.continent==='South America')Object.assign(base,{oil:24,gas:24,coal:22,iron:41,rare:26,timber:68,fish:62});if(p.continent==='Oceania')Object.assign(base,{oil:18,gas:24,coal:46,iron:57,uranium:54,timber:27,fish:78});if(p.continent==='Antarctica')return Object.fromEntries(resourceNames.map(([k])=>[k,0]));const seed=(p.iso_a3||'')+p.name;for(const[k]of resourceNames)base[k]=Math.round(clamp(base[k]+noise(seed+k)*34-17));return base;}
+function statsFor(p,wb={}){let pop=wb.pop??p.pop_est,gdp=wb.gdp??p.gdp_md_est*1e6,agri=wb.agri??null,arable=wb.arable??null,forest=wb.forest??null;let fertility=arable!=null?clamp(arable*1.7+(agri??arable)*.45):fallbackFertility(p);if(arable==null)arable=clamp(fertility/2,0,65);if(agri==null)agri=clamp(arable+noise(p.name+'agri')*28-3);if(forest==null)forest=clamp(18+noise(p.name+'forest')*58);const resources=resourcesFor(p);const resourceTotal=Math.round(Object.values(resources).reduce((a,b)=>a+b,0)/Object.keys(resources).length);const density=pop&&p.area_km2?pop/p.area_km2:null;return{pop,gdp,agri,arable,forest,fertility,resources,resourceTotal,density,climate:climateFor(p.center_lat,p.continent),terrain:terrainFor(p),coast:noise(p.name+'coast')>.35?'Coastal access':'Landlocked / interior'};}
+function isoKey(p){return(p.iso_a3&&p.iso_a3!=='-99')?p.iso_a3:p.name;}
+
+function scenarioFaction(k){return'neutral';}
+function factionLabel(f){return FACTION_LABELS[f]||f?.toUpperCase()||'NEUTRAL';}
+function ownerName(owner){if(!owner)return'Unclaimed';if(owner.startsWith('AI:')){const k=owner.slice(3);return(countryData[k]?.name||k)+' AI';}return state.players[owner]?.name||'Player';}
+function ownerColor(owner){return owner?.startsWith('AI:')?colorFor(owner):colorFor(owner||'neutral');}
+function ownerIsHuman(owner){return !!owner&&!owner.startsWith('AI:');}
+function powerCountries(owner){return Object.keys(state.owners).filter(k=>state.owners[k]===owner);}
+function aiPowerCount(){return Object.values(state.owners).filter(x=>x?.startsWith('AI:')).length;}
+function incomeFor(owner){return powerCountries(owner).reduce((sum,k)=>sum+2+(state.countryState[k]?.industry||0)/20,0);}
+function myFunds(){return state.funds[myId]??0;}
+function setConnection(on,text){$('liveDot').classList.toggle('on',on);$('status').textContent=text;}
+function addActivity(text){const key=text+Date.now()+Math.random();if(seenEvents.includes(key))return;seenEvents.push(key);seenEvents=seenEvents.slice(-40);const row=document.createElement('div');row.className='event';row.textContent=text;const box=$('activity');if(box.querySelector('.small'))box.innerHTML='';box.prepend(row);while(box.children.length>14)box.lastElementChild.remove();}
+
+async function fetchAssetJson(file,timeoutMs=12000){
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),timeoutMs);
+ const url=new URL('./'+file,document.baseURI).href;
+ try{
+  const res=await fetch(url,{cache:'no-store',signal:controller.signal});
+  if(!res.ok)throw new Error(file+' returned HTTP '+res.status);
+  return await res.json();
+ }catch(err){
+  const detail=err?.name==='AbortError'?'timed out after '+Math.round(timeoutMs/1000)+'s':(err?.message||'request failed');
+  throw new Error(file+' could not be loaded from '+url+' · '+detail);
+ }finally{clearTimeout(timer);}
+}
+function showWorldLoadError(err){
+ const msg=err?.message||String(err);
+ $('startStatus').textContent='World map could not start.';
+ $('startStatus').style.color='#ffb7c1';
+ $('startError').innerHTML='<b>Startup error</b><br>'+escapeHtml(msg)+'<br><span style="color:#c4cfdb">Check that <b>index.html</b> and <b>world.geojson</b> are in the same GitHub Pages folder.</span>';
+ $('startError').classList.remove('hidden');
+ $('startRetry').classList.remove('hidden');
+ $('status').textContent='World load failed';
+}
+async function loadWorld(){
+ $('startStatus').textContent='Loading present-day world…';
+ $('startError').classList.add('hidden');
+ $('startRetry').classList.add('hidden');
+ try{
+  world=await fetchAssetJson('world.geojson');
+  countryData={};
+  world.features.forEach(f=>{const p=f.properties,k=isoKey(p);countryData[k]={...p,stats:statsFor(p,{})};});
+  buildMap();
+  neighbors=buildNeighborGraph();
+  draw();
+  
+  $('dataBadge').textContent='LOCAL WORLD';
+  $('dataNote').textContent='Present-day country data is generated locally. No live data service is required.';
+  $('startStatus').textContent='World ready · choose your country';
+  $('startStatus').style.color='';
+  $('status').textContent='Present day · offline';
+  $('startRetry').classList.add('hidden');
+ }catch(e){
+  console.error(e);
+  showWorldLoadError(e);
+  throw e;
+ }
+}
+function setupLayers(){const el=$('layers');el.innerHTML='';for(const[key,label]of layers){const b=document.createElement('button');b.textContent=label;b.dataset.layer=key;b.onclick=()=>{activeLayer=key;document.querySelectorAll('#layers button').forEach(x=>x.classList.toggle('active',x===b));drawCountries();updateLegend();};el.appendChild(b);}el.firstChild.classList.add('active');}
+function buildMap(){setupLayers();const svg=d3.select('#map');svg.selectAll('*').remove();mapGroup=svg.append('g');projection=d3.geoNaturalEarth1();projection.fitExtent([[10,12],[990,588]],world);path=d3.geoPath(projection);mapGroup.append('rect').attr('class','water').attr('x',0).attr('y',0).attr('width',1000).attr('height',600);zoom=d3.zoom().scaleExtent([1,18]).on('zoom',e=>mapGroup.attr('transform',e.transform));svg.call(zoom);$('resetZoom').onclick=()=>svg.transition().duration(350).call(zoom.transform,d3.zoomIdentity);}
+function colorScale(v){if(v==null)return'#9ab18d';return d3.interpolateYlGnBu(clamp(v)/100);}
+function factionColor(f){return({central:'#bb6d74',entente:'#668fd3',axis:'#b85f67',allies:'#5f8dbf',neutral:'#879b87'}[f]||'#879b87');}
+function layerValue(f){const s=countryData[isoKey(f)]?.stats;if(!s)return null;switch(activeLayer){case'fertility':return s.fertility;case'population':return Math.log10(Math.max(1,s.pop))/10*100;case'wealth':return Math.log10(Math.max(1,s.gdp))/14*100;case'resources':return s.resourceTotal;default:return null;}}
+function countryFill(f){const k=isoKey(f);if(state.phase==='game'&&activeLayer==='overview'&&state.owners[k])return ownerColor(state.owners[k]);return activeLayer==='overview'&&state.phase!=='game'&&state.choices[k]?ownerColor(state.choices[k]):colorScale(layerValue(f));}
+function drawCountries(){if(!mapGroup||!world)return;mapGroup.selectAll('.country').remove();mapGroup.selectAll('.country').data(world.features).enter().append('path').attr('class','country').attr('d',path).attr('fill',countryFill).classed('selected',d=>isoKey(d)===selected).classed('selfOwned',d=>state.owners[isoKey(d)]===myId).classed('locked',d=>state.phase==='selecting'&&state.choices[isoKey(d)]&&state.choices[isoKey(d)]!==myId).on('mouseenter',function(e,d){const p=countryData[isoKey(d)];if(p)showTooltip(e,p,p.stats);}).on('mousemove',moveTooltip).on('mouseleave',hideTooltip).on('click',(e,d)=>onMapCountry(d));}
+function showTooltip(e,p,s){const k=isoKey(p);const owner=state.owners[k];const choice=state.choices[k];let tail=state.phase==='game'?(ownerName(owner)+' · Army '+Math.round(state.countryState[k]?.army||0)):(choice?'Chosen by '+ownerName(choice):'Available');$('tooltip').style.display='block';$('tooltip').innerHTML='<b>'+escapeHtml(p.name)+'</b><span>'+escapeHtml(p.continent)+' · '+escapeHtml(s.terrain)+'</span><span>Fertility '+Math.round(s.fertility)+'/100 · Resources '+Math.round(s.resourceTotal)+'/100</span><span>'+escapeHtml(tail)+'</span>';moveTooltip(e);}
+function moveTooltip(e){const t=$('tooltip');t.style.left=Math.min(innerWidth-205,e.clientX+12)+'px';t.style.top=Math.min(innerHeight-80,e.clientY+12)+'px';}
+function hideTooltip(){$('tooltip').style.display='none';}
+function onMapCountry(d){const k=isoKey(d);selected=k;if(state.phase==='selecting')showPickPreview(k);else{drawCountries();renderIntel(countryData[k],k);}if(state.phase==='selecting')renderCountryList();}
+function meter(v){return'<div class="meter"><i style="width:'+clamp(v)+'%"></i></div>';}
+function renderIntel(p,k){if(!p)return;const s=p.stats,owner=state.owners[k],cs=state.countryState[k]||{},canAttack=state.phase==='game'&&state.owners[k]===myId;const resHtml=resourceNames.map(([r,label])=>'<div class="resource"><div class="rname">'+label+'</div><div class="rv">'+Math.round(s.resources[r])+'/100</div>'+meter(s.resources[r])+'</div>').join('');let attackHtml='';if(state.phase==='game'&&owner===myId)attackHtml='<button id="attackBtn" class="danger">Attack selected target</button>';else if(state.phase==='game'&&owner&&owner!==myId&&selected!==k)attackHtml='<button class="danger" disabled>Attack selected target</button>';const adj=state.phase==='game'&&selected?getNeighbors(k).filter(n=>state.owners[n]!==myId).length:0;let controls='';if(state.phase==='game'&&owner===myId)controls='<div class="countryActions"><button id="recruitHere" class="good">Recruit +6</button><button id="fortifyHere">Fortify +4</button></div>';if(state.phase==='game'&&owner!==myId&&selected&&state.owners[selected]===myId&&getNeighbors(selected).includes(k))controls='<div class="countryActions"><button id="attackBtn" class="danger">Attack from '+escapeHtml(countryData[selected].name)+'</button><button id="cancelTarget">Cancel target</button></div>';$('countryCard').innerHTML='<h3>'+escapeHtml(p.name)+'</h3><div class="small">'+escapeHtml(p.continent)+' · '+escapeHtml(p.iso_a3||'—')+' · '+escapeHtml(s.terrain)+' · '+escapeHtml(s.climate)+'</div><div class="small" style="margin-top:4px"><b>Owner:</b> '+escapeHtml(ownerName(owner))+' · <b>Army:</b> '+Math.round(cs.army||0)+' · <b>Industry:</b> '+Math.round(cs.industry||0)+'</div><div class="statGrid" style="margin-top:10px"><div class="stat"><div class="k">Population</div><div class="v">'+fmtNum(s.pop)+'</div></div><div class="stat"><div class="k">GDP</div><div class="v">'+fmtMoney(s.gdp)+'</div></div><div class="stat"><div class="k">Area</div><div class="v">'+fmtNum(p.area_km2)+' km²</div></div><div class="stat"><div class="k">Density</div><div class="v">'+(s.density?fmtNum(s.density)+'/km²':'—')+'</div></div><div class="stat"><div class="k">Fertility</div><div class="v">'+Math.round(s.fertility)+'/100</div></div><div class="stat"><div class="k">Neighbors</div><div class="v">'+getNeighbors(k).length+'</div></div></div><div class="small" style="margin-top:8px"><b>Strategic:</b> '+escapeHtml(s.coast)+(state.phase==='game'&&getNeighbors(k).includes(selected)?' · adjacent to your selection':'')+'</div><h4 style="margin-top:12px">Resource potential</h4><div class="resourceGrid">'+resHtml+'</div>'+controls+'<div class="small" style="margin-top:8px">Resource values are gameplay estimates generated locally for the strategy simulation.</div>';if($('recruitHere'))$('recruitHere').onclick=()=>sendAction({type:'recruit',country:k});if($('fortifyHere'))$('fortifyHere').onclick=()=>sendAction({type:'fortify',country:k});if($('attackBtn'))$('attackBtn').onclick=()=>sendAction({type:'attack',from:selected,to:k});if($('cancelTarget'))$('cancelTarget').onclick=()=>{selected=k;draw();renderIntel(countryData[k],k);};}
+function updateLegend(){document.querySelector('.mapLegend')?.remove();const d=document.createElement('div');d.className='mapLegend legend';if(activeLayer==='overview'&&state.phase==='game'){d.innerHTML='<span><i class="swatch" style="background:'+colorFor(myId)+'"></i>your country</span><span><i class="swatch" style="background:#9a9a9a"></i>AI countries</span>';}else{d.innerHTML='<span><i class="swatch" style="background:#eef7e9"></i>low</span><span><i class="swatch" style="background:#7fcdbb"></i>mid</span><span><i class="swatch" style="background:#2c7fb8"></i>high</span>';}$('mapPanel').appendChild(d);}
+function countClaims(){const vals=Object.values(state.owners||{});$('totalClaimed').textContent=vals.length;$('myCountries').textContent=vals.filter(x=>x===myId).length;$('aiCount').textContent=aiPowerCount();$('myFunds').textContent=state.phase==='game'?fmtMoney(myFunds()):'—';}
+function renderPlayers(){const entries=Object.entries(state.players||{});$('playerPill').textContent=entries.length+' ONLINE';$('players').innerHTML=entries.length?entries.sort((a,b)=>a[0].localeCompare(b[0])).map(([pid,p])=>'<div class="player"><span class="playerName"><i class="dot" style="background:'+colorFor(pid)+'"></i>'+escapeHtml(p.name)+(pid===myId?' <span class="playerMeta">(you)</span>':'')+'</span><span class="badge '+(state.choices[Object.keys(state.choices).find(k=>state.choices[k]===pid)]?'ready':'')+'">'+(pid===state.hostId?'HOST':state.choices&&Object.values(state.choices).includes(pid)?'COUNTRY':'ONLINE')+'</span></div>').join(''):'<div class="small">Waiting for players…</div>';$('hostLine').textContent='Host: '+(state.players[state.hostId]?.name||'—');updateRoomButtons();renderPickPlayers();countClaims();}
+function updateRoomButtons(){$('startSelection').disabled=!roomCode||state.phase!=='lobby'||state.hostId!==myId;$('startSelection').textContent=state.hostId===myId?(state.phase==='lobby'?'CHOOSE COUNTRIES':'GAME LIVE'):'WAITING FOR HOST';$('ready').disabled=!roomCode||state.phase!=='lobby';$('copyRoom').disabled=!roomCode;$('leave').disabled=!roomCode;if(roomCode){$('roomPill').classList.remove('hidden');$('roomPill').textContent='ROOM '+roomCode;$('roomLine').innerHTML='<span>Room <b class="mono">'+escapeHtml(roomCode)+'</b></span><span class="badge '+(state.phase==='game'?'ready':'')+'">'+state.phase.toUpperCase()+'</span>';}else{$('roomPill').classList.add('hidden');$('roomLine').textContent='No room connected.';}}
+function renderPickPlayers(){if(!$('pickPlayers'))return;const entries=Object.entries(state.players||{});$('pickPlayers').innerHTML='<b>Players</b><br>'+entries.map(([pid,p])=>{const k=Object.keys(state.choices||{}).find(x=>state.choices[x]===pid);return '• '+escapeHtml(p.name)+(k?' — '+escapeHtml(countryData[k]?.name||k):' — choosing…');}).join('<br>');}
+function updateTurnUI(){const humanIds=Object.keys(state.players);const doneCount=humanIds.filter(id=>state.done[id]).length;const total=humanIds.length||1;if(state.phase==='game'){$('turnPill').textContent='TURN '+state.turn;$('turnLabel').textContent='Turn '+state.turn;$('turnHint').textContent=doneCount+'/'+total+' human players ended their turn';$('turnProgress').style.width=Math.round(doneCount/total*100)+'%';$('endTurn').disabled=!!state.done[myId];$('endTurn').textContent=state.done[myId]?'TURN ENDED':'END TURN';$('recruit').disabled=true;}else{$('turnPill').textContent=state.phase==='selecting'?'SELECT':'LOBBY';$('turnLabel').textContent=state.phase==='selecting'?'Country selection':'Lobby';$('turnHint').textContent=state.phase==='selecting'?'Pick a unique country. Unpicked countries become AI powers.':'Choose a country to start your campaign.';$('turnProgress').style.width='0%';$('endTurn').disabled=true;$('recruit').disabled=true;}}
+function snapshot(){return{phase:state.phase,scenario:state.scenario,turn:state.turn,hostId:state.hostId,players:{...state.players},choices:{...state.choices},owners:{...state.owners},countryState:{...state.countryState},funds:{...state.funds},done:{...state.done},factions:{...state.factions}};}
+function applySnapshot(s){if(!s||typeof s!=='object')return;const oldPhase=state.phase;state.phase=s.phase||'lobby';state.scenario=s.scenario||'modern';state.turn=Number(s.turn||0);state.hostId=s.hostId||state.hostId;state.players={...(s.players||state.players)};state.choices={...(s.choices||{})};state.owners={...(s.owners||{})};state.countryState={...(s.countryState||{})};state.funds={...(s.funds||{})};state.done={...(s.done||{})};state.factions={...(s.factions||{})};$('scenarioPill').textContent=SCENARIOS[state.scenario]?.label||state.scenario.toUpperCase();if(state.phase==='selecting'){openPickOverlay();}else if(state.phase==='game'){$('pickOverlay').classList.add('hidden');}else if(oldPhase!=='lobby')$('pickOverlay').classList.add('hidden');renderPlayers();draw();renderGameText();ensureHostLoop();}
+function renderGameText(){updateTurnUI();$('mapHint').textContent=state.phase==='game'?'Select your country, then click an adjacent enemy to attack · build armies · end your turn':state.phase==='selecting'?'Choose a unique country in the selection window':'Click a country to inspect it · drag to pan · wheel/pinch to zoom';updateLegend();}
+
+function buildNeighborGraph(){const keys=world.features.map(f=>isoKey(f.properties));const out={};for(const k of keys)out[k]=[];const items=world.features.map(f=>{const p=f.properties;return{k:isoKey(p),lat:+p.center_lat||0,lon:+p.center_lon||0,cont:p.continent};});for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){const a=items[i],b=items[j];let dlon=Math.abs(a.lon-b.lon);if(dlon>180)dlon=360-dlon;const dx=dlon*90*Math.cos(((a.lat+b.lat)/2)*Math.PI/180);const dy=Math.abs(a.lat-b.lat)*111;const d=Math.sqrt(dx*dx+dy*dy);const threshold=(a.cont===b.cont?1050:720);if(d<threshold){out[a.k].push(b.k);out[b.k].push(a.k);}}const extras=[['ESP','PRT'],['ESP','MAR'],['RUS','USA'],['JPN','KOR'],['GBR','FRA'],['GBR','NOR'],['IDN','MYS'],['IDN','PHL'],['AUS','IDN'],['ITA','GRC'],['TUR','GRC'],['EGY','CYP']];for(const[a,b]of extras){if(out[a]&&out[b]){if(!out[a].includes(b))out[a].push(b);if(!out[b].includes(a))out[b].push(a);}}return out;}
+let neighbors={};
+function getNeighbors(k){return neighbors[k]||[];}
+function baseArmy(k){const s=countryData[k]?.stats||{};return Math.round(8+Math.log10(Math.max(1,s.pop||1))*2+(s.gdp?Math.log10(Math.max(1,s.gdp))/2:0));}
+function initGameState(){state.owners={};state.countryState={};state.funds={};state.done={};state.factions={};for(const f of world.features){const k=isoKey(f.properties);const humanPid=Object.keys(state.choices).find(pid=>state.choices[pid]===k);state.owners[k]=humanPid||'AI:'+k;const bonus=scenarioFaction(k)!=='neutral'?4:0;state.countryState[k]={army:baseArmy(k)+bonus,industry:Math.round(clamp((countryData[k].stats?.resourceTotal||40)/2+noise(k+'industry')*15)),fort:noise(k+'fort')*4};state.factions[k]=scenarioFaction(k);}for(const pid of Object.keys(state.players)){if(!Object.values(state.choices).includes(pid)){const free=world.features.map(f=>isoKey(f.properties)).find(k=>!Object.values(state.choices).includes(k));if(free)state.choices[free]=pid;state.owners[free]=pid;}}
+for(const owner of new Set(Object.values(state.owners))){state.funds[owner]=30;}
+state.phase='game';state.turn=1;for(const pid of Object.keys(state.players))state.done[pid]=false;selected=Object.keys(state.choices).find(k=>state.choices[k]===myId)||Object.keys(state.owners)[0]||null;}
+function ensureAllHumansPicked(){for(const pid of Object.keys(state.players))if(!Object.values(state.choices).includes(pid))return false;return true;}
+function startSelecting(){state.phase='selecting';state.scenario='modern';state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};for(const p of Object.values(state.players))p.ready=false;selected=null;addActivity('Country selection opened · Present Day');openPickOverlay();broadcast('state',snapshot());applySnapshot(snapshot());}
+function confirmPick(k){if(!k||!countryData[k])return;if(state.phase!=='selecting')return;sendAction({type:'choose_country',country:k});}
+function countryGlyph(p){
+ const c=p.continent||'';
+ return c==='Africa'?'🌍':c==='Asia'?'🌏':c==='Europe'?'🏰':c==='North America'?'🦅':c==='South America'?'🌎':c==='Oceania'?'🌊':'🗺️';
+}
+function formatCompact(n){if(n==null||!isFinite(n))return'—';if(Math.abs(n)>=1e9)return(n/1e9).toFixed(1)+'B';if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+'M';if(Math.abs(n)>=1e3)return(n/1e3).toFixed(1)+'K';return Math.round(n).toLocaleString();}
+function refreshPickStats(){
+ const all=world?.features||[];
+ const keys=all.map(f=>isoKey(f.properties));
+ const claimed=keys.filter(k=>state.choices[k]);
+ const available=keys.length-claimed.length;
+ $('availableCount').textContent=available;
+ $('claimedCount').textContent=claimed.length;
+ $('playerCountPick').textContent=Object.keys(state.players||{}).length;
+ const myCountry=Object.keys(state.choices||{}).find(k=>state.choices[k]===myId);
+ $('myPickLabel').textContent=myCountry?(countryData[myCountry]?.name||myCountry).toUpperCase():'NONE';
+}
+function renderPickPlayers(){
+ const box=$('pickPlayers');
+ const rows=Object.entries(state.players||{}).map(([pid,p])=>{const k=Object.keys(state.choices||{}).find(x=>state.choices[x]===pid);const label=k?(countryData[k]?.name||k):'Choosing…';const mine=pid===myId;return'<div class="pickPlayer"><span>'+escapeHtml((p?.name||'Player')+(mine?' (You)':''))+'</span><span class="state">'+escapeHtml(label)+'</span></div>';}).join('');
+ box.innerHTML=rows||'<div class="small">No players yet.</div>';
+ refreshPickStats();
+}
+function populateCountryRegions(){
+ const select=$('countryRegion');
+ if(!select||select.dataset.ready||!world)return;
+ const regions=[...new Set(world.features.map(f=>f.properties?.continent).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+ select.innerHTML='<option value="all">All continents</option>'+regions.map(r=>'<option value="'+escapeHtml(r)+'">'+escapeHtml(r)+'</option>').join('');
+ select.dataset.ready='1';
+}
+function pickFilterMode(k){
+ const owner=state.choices[k];
+ const mine=owner===myId;
+ if($('countryAvailability').value==='available')return !owner;
+ if($('countryAvailability').value==='mine')return mine;
+ if($('countryAvailability').value==='taken')return !!owner&&!mine;
+ return true;
+}
+function renderCountryList(){
+ if(!world)return;
+ populateCountryRegions();
+ const q=$('countrySearch').value.trim().toLowerCase();
+ const region=$('countryRegion').value;
+ const keys=world.features.map(f=>isoKey(f.properties)).filter(k=>{
+  const p=countryData[k]||{};
+  const name=(p.name||k).toLowerCase();
+  const continent=p.continent||'';
+  return (!q||name.includes(q)||(k||'').toLowerCase().includes(q))&&(region==='all'||continent===region)&&pickFilterMode(k);
+ }).sort((a,b)=>countryData[a].name.localeCompare(countryData[b].name));
+ const chosenCount=Object.keys(state.choices||{}).length;
+ $('countryListMeta').textContent=keys.length+' shown · '+chosenCount+' chosen';
+ $('countryList').innerHTML=keys.map(k=>{
+  const p=countryData[k],chosenBy=state.choices[k],mine=chosenBy===myId,locked=!!chosenBy&&!mine;
+  const s=p.stats||{}, availability=mine?'YOUR PICK':locked?'TAKEN':'AVAILABLE';
+  return '<button class="countryOption '+(mine?'mine ':'')+(locked?'locked':'')+'" data-country="'+escapeHtml(k)+'" aria-label="'+escapeHtml(p.name)+' · '+availability+'">'+
+    '<div class="rowTop"><span class="n">'+escapeHtml(p.name)+'</span><span class="code">'+escapeHtml(k)+'</span></div>'+
+    '<div class="meta">'+escapeHtml(p.continent||'')+' · '+escapeHtml(s.terrain||'Unknown terrain')+'</div>'+
+    '<span class="badgeMini">'+availability+' · '+Math.round(s.resourceTotal||0)+' RES</span>'+(
+      mine?'<span class="check">✓</span>':''
+    )+'</button>';
+ }).join('') || '<div class="small" style="grid-column:1/-1;padding:16px;text-align:center">No countries match those filters.</div>';
+ document.querySelectorAll('.countryOption').forEach(b=>b.onclick=()=>{selected=b.dataset.country;showPickPreview(selected);renderCountryList();});
+ renderPickPlayers();
+}
+function showPickPreview(k){
+ const p=countryData[k];
+ if(!p)return;
+ const chosenBy=state.choices[k],mine=chosenBy===myId,locked=chosenBy&&!mine,s=p.stats||{};
+ $('selectedCode').textContent=k;
+ $('pickPreview').innerHTML='<div class="countryHero"><div class="countryGlyph">'+countryGlyph(p)+'</div><span class="pickStatus '+(mine?'mine':locked?'taken':'')+'">'+(mine?'YOUR PICK':locked?'TAKEN':'AVAILABLE')+'</span></div>'+
+  '<h3 style="margin:10px 0 2px">'+escapeHtml(p.name)+'</h3>'+
+  '<div class="small">'+escapeHtml(p.continent||'')+' · '+escapeHtml(s.terrain||'Unknown terrain')+' · '+escapeHtml(k)+'</div>'+
+  '<div class="previewStats">'+
+   '<div class="previewStat"><b>'+baseArmy(k)+'</b><span>Starting army</span></div>'+
+   '<div class="previewStat"><b>'+Math.round(s.resourceTotal||0)+'/100</b><span>Resource score</span></div>'+
+   '<div class="previewStat"><b>'+Math.round(s.fertility||0)+'/100</b><span>Fertility</span></div>'+
+   '<div class="previewStat"><b>'+formatCompact(s.pop)+'</b><span>Population</span></div>'+
+  '</div>'+
+  '<div class="small" style="margin-top:8px">'+(locked?'Another player has already locked this country.':mine?'This country is locked to you.':'Available to claim. Lock it when you are ready.')+'</div>';
+ $('confirmCountry').disabled=locked||mine;
+ $('confirmCountry').textContent=mine?'LOCKED':locked?'TAKEN':'LOCK COUNTRY';
+}
+function openPickOverlay(){
+ if(!world)return;
+ populateCountryRegions();
+ $('pickOverlay').classList.remove('hidden');
+ $('pickTitle').textContent='Choose your country';
+ $('pickSubtitle').textContent='Present Day · Pick one country to lead. No historical scenarios.';
+ $('pickPhaseBadge').textContent='PRESENT DAY SELECT';
+ $('launchGame').classList.toggle('hidden',state.hostId!==myId);$('launchGame').textContent=(!roomCode&&state.hostId===myId)?'START CAMPAIGN':'LAUNCH GAME';
+ $('closePick').textContent=state.hostId===myId?'BACK TO LOBBY':'HIDE WINDOW';
+ refreshPickStats();
+ renderCountryList();
+ if(selected&&countryData[selected])showPickPreview(selected);else{const first=world.features.map(f=>isoKey(f.properties)).find(k=>!state.choices[k]);if(first){selected=first;showPickPreview(selected);}}
+ renderLaunchNote();
+}
+function renderLaunchNote(){
+ const picked=Object.keys(state.players).filter(pid=>Object.values(state.choices).includes(pid)).length;
+ const total=Object.keys(state.players).length||1;
+ if(state.hostId===myId){
+  $('launchNote').textContent=picked===total?'All players picked. Launch to fill every remaining nation with AI powers.':picked+'/'+total+' players picked. You can launch now; missing players receive a random country.';
+  document.querySelectorAll('.pickSteps span').forEach((x,i)=>x.classList.toggle('active',i<2));
+ }else{
+  $('launchNote').textContent=picked+'/'+total+' players picked. Waiting for the host to launch.';
+  document.querySelectorAll('.pickSteps span').forEach((x,i)=>x.classList.toggle('active',i===0));
+ }
+}
+function chooseRandom(){
+ const region=$('countryRegion').value;
+ const free=world.features.map(f=>isoKey(f.properties)).filter(k=>!state.choices[k]&&(region==='all'||countryData[k]?.continent===region));
+ if(!free.length)return toast('No available country matches this filter.');
+ selected=free[Math.floor(Math.random()*free.length)];
+ showPickPreview(selected);
+ renderCountryList();
+}
+function deterministicRoll(seed){return noise(state.scenario+'|'+state.turn+'|'+seed);}
+function canAttack(from,to,owner){return state.phase==='game'&&owner===myId&&getNeighbors(from).includes(to)&&state.owners[to]!==owner;}
+function resolveAttack(from,to,actor){if(!canAttack(from,to,actor)){toast('You can only attack an adjacent enemy from your own country.');return;}const a=state.countryState[from],d=state.countryState[to],roll=deterministicRoll(from+to),attackPower=a.army+a.industry*.22+a.fort*.3,defPower=d.army+d.industry*.18+d.fort*.6;const attackLoss=Math.max(2,Math.round(a.army*(.16+roll*.14)));const defLoss=Math.max(2,Math.round(d.army*(.42+roll*.18)));a.army=Math.max(1,a.army-attackLoss);d.army=Math.max(0,d.army-defLoss);if(attackPower>defPower*(.93+roll*.22)){state.owners[to]=actor;d.army=Math.max(2,Math.round(a.army*.35));d.fort=Math.max(0,d.fort-1);state.funds[actor]=Math.max(0,(state.funds[actor]||0)-4);addActivity(ownerName(actor)+' conquered '+countryData[to].name);}else addActivity(ownerName(actor)+' attacked '+countryData[to].name+' but was repelled.');}
+function aiTakeTurn(){const aiOwners=[...new Set(Object.values(state.owners).filter(x=>x?.startsWith('AI:')))].sort();for(const owner of aiOwners){const owned=powerCountries(owner);if(!owned.length)continue;const income=incomeFor(owner);state.funds[owner]=(state.funds[owner]||30)+income;for(const k of owned){state.countryState[k].army+=Math.max(1,Math.round(1+state.countryState[k].industry/18));}
+let best=null;for(const from of owned){for(const to of getNeighbors(from)){if(state.owners[to]===owner)continue;const a=state.countryState[from],d=state.countryState[to];const strength=a.army+a.industry*.2;const enemy=d.army+d.industry*.15;const score=strength-enemy+deterministicRoll(owner+from+to)*4;if(!best||score>best.score)best={from,to,score,strength,enemy};}}if(best&&best.strength>best.enemy*1.05){const oldFrom=state.countryState[best.from].army;resolveAiAttack(owner,best.from,best.to);if(oldFrom!==state.countryState[best.from].army)addActivity(ownerName(owner)+' made a move.');}
+for(const k of powerCountries(owner)){if((state.funds[owner]||0)>=8&&state.countryState[k].army<18){state.funds[owner]-=8;state.countryState[k].army+=6;}}
+}}
+function resolveAiAttack(owner,from,to){const a=state.countryState[from],d=state.countryState[to],roll=deterministicRoll(owner+from+to),ap=a.army+a.industry*.22+a.fort*.3,dp=d.army+d.industry*.18+d.fort*.6;a.army=Math.max(1,a.army-Math.max(2,Math.round(a.army*(.14+roll*.12))));d.army=Math.max(0,d.army-Math.max(2,Math.round(d.army*(.38+roll*.2))));if(ap>dp*(.95+roll*.2)){state.owners[to]=owner;state.countryState[to].army=Math.max(2,Math.round(a.army*.3));}}
+function processEndOfTurn(){for(const pid of Object.keys(state.players))state.funds[pid]=(state.funds[pid]||30)+incomeFor(pid);for(const k of Object.keys(state.owners)){if(ownerIsHuman(state.owners[k]))state.countryState[k].army+=Math.max(1,Math.round(state.countryState[k].industry/22));}aiTakeTurn();state.turn++;state.done={};for(const pid of Object.keys(state.players))state.done[pid]=false;addActivity('Turn '+state.turn+' begins.');}
+function maybeAdvanceTurn(){const ids=Object.keys(state.players);if(ids.length&&ids.every(pid=>state.done[pid])){processEndOfTurn();broadcast('state',snapshot());applySnapshot(snapshot());}}
+
+async function handleAction(action){if(!action?.type)return;const pid=action.playerId;if(!pid||!state.players[pid]||pid!==myId&&state.hostId!==myId)return;
+ if(action.type==='set_ready'){state.players[pid].ready=!!action.ready;await broadcast('state',snapshot());applySnapshot(snapshot());return;}
+ if(action.type==='scenario'&&pid===state.hostId&&state.phase==='lobby'){if(SCENARIOS[action.scenario])state.scenario=action.scenario;await broadcast('state',snapshot());applySnapshot(snapshot());return;}
+ if(action.type==='start_selection'&&pid===state.hostId&&state.phase==='lobby'){startSelecting();return;}
+ if(action.type==='choose_country'&&state.phase==='selecting'){const k=action.country;if(!countryData[k])return;const previous=Object.keys(state.choices).find(x=>state.choices[x]===pid);if(previous)delete state.choices[previous];if(state.choices[k]&&state.choices[k]!==pid)return;state.choices[k]=pid;selected=k;addActivity((state.players[pid]?.name||'Player')+' chose '+countryData[k].name);await broadcast('state',snapshot());applySnapshot(snapshot());return;}
+ if(action.type==='launch_game'&&pid===state.hostId&&state.phase==='selecting'){launchGame();return;}
+ if(action.type==='recruit'&&state.phase==='game'&&state.owners[action.country]===pid){if((state.funds[pid]||0)<8){if(pid===myId)toast('Need $8 to recruit.');return;}state.funds[pid]-=8;state.countryState[action.country].army+=6;addActivity(ownerName(pid)+' recruited troops in '+countryData[action.country].name);await broadcast('state',snapshot());applySnapshot(snapshot());return;}
+ if(action.type==='fortify'&&state.phase==='game'&&state.owners[action.country]===pid){if((state.funds[pid]||0)<5){if(pid===myId)toast('Need $5 to fortify.');return;}state.funds[pid]-=5;state.countryState[action.country].fort=(state.countryState[action.country].fort||0)+4;addActivity(ownerName(pid)+' fortified '+countryData[action.country].name);await broadcast('state',snapshot());applySnapshot(snapshot());return;}
+ if(action.type==='attack'&&state.phase==='game'){const k1=action.from,k2=action.to;if(state.owners[k1]!==pid||!getNeighbors(k1).includes(k2)||state.owners[k2]===pid)return;if(pid===myId)resolveAttack(k1,k2,pid);else resolveAttack(k1,k2,pid);await broadcast('state',snapshot());applySnapshot(snapshot());return;}
+ if(action.type==='end_turn'&&state.phase==='game'){state.done[pid]=true;addActivity((state.players[pid]?.name||'Player')+' ended turn.');await maybeAdvanceTurn();await broadcast('state',snapshot());applySnapshot(snapshot());return;}
+}
+async function sendAction(action){if(!roomCode){await handleLocalAction({...action,playerId:myId});return;}if(myId===state.hostId)await handleAction({...action,playerId:myId});else await broadcast('action',{...action,playerId:myId});}
+async function handleLocalAction(action){const temp=state.hostId;state.hostId=myId;if(!state.players[myId])state.players[myId]={name:playerName,ready:true};await handleAction(action);state.hostId=temp||myId;}
+async function broadcast(event,payload){if(!channel)return;try{await channel.send({type:'broadcast',event,payload});}catch(e){console.warn(e);}}
+function currentPresence(){if(!channel)return{};const raw=channel.presenceState(),out={};for(const[key,vals]of Object.entries(raw)){const p=vals?.[vals.length-1];if(p?.id)out[p.id]={name:p.name||'Player',ready:!!p.ready};}return out;}
+async function trackPresence(){if(!channel)return;await channel.track({id:myId,name:playerName,ready:!!state.players[myId]?.ready});}
+function wireChannel(){channel.on('broadcast',{event:'action'},async msg=>{if(myId===state.hostId&&msg.payload)await handleAction(msg.payload);}).on('broadcast',{event:'state'},msg=>{if(msg.payload)applySnapshot(msg.payload);}).on('broadcast',{event:'request_state'},async()=>{if(myId===state.hostId)await broadcast('state',snapshot());}).on('presence',{event:'sync'},async()=>{const p=currentPresence();state.players={...state.players,...p};const ids=Object.keys(p);if(!state.hostId&&ids.length){state.hostId=ids.slice().sort()[0];}else if(state.hostId&&!p[state.hostId]&&ids.length){const next=ids.slice().sort()[0];state.hostId=next;if(myId===next){addActivity('You became host.');await broadcast('state',snapshot());}}renderPlayers();if(myId===state.hostId)await broadcast('state',snapshot());ensureHostLoop();}).on('presence',{event:'join'},()=>{renderPlayers();}).on('presence',{event:'leave'},async()=>{const p=currentPresence();for(const pid of Object.keys(state.players))if(!p[pid])delete state.players[pid];renderPlayers();});}
+function subscribeChannel(){return new Promise(resolve=>{channel.subscribe(status=>resolve(status));});}
+function ensureHostLoop(){if(myId===state.hostId&&state.phase==='game'){if(!hostTimer)hostTimer=setInterval(()=>{if(myId===state.hostId&&state.phase==='game')broadcast('state',snapshot());else{clearInterval(hostTimer);hostTimer=null;}},6000);}else if(hostTimer){clearInterval(hostTimer);hostTimer=null;}}
+async function leaveRoom(resetOverlay=true){if(hostTimer){clearInterval(hostTimer);hostTimer=null;}if(channel){try{await channel.untrack();await channel.unsubscribe();}catch(e){}}channel=null;if(roomCode)addActivity('Left room '+roomCode);roomCode='';state.phase='lobby';state.turn=0;state.hostId=null;state.players={};state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};selected=null;updateRoomButtons();setConnection(false,'Offline');if(resetOverlay)$('startOverlay').classList.remove('hidden');$('code').value='';draw();}
+function makeCode(){const chars='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';let out='';for(let i=0;i<6;i++)out+=chars[Math.floor(Math.random()*chars.length)];return out;}
+function toast(msg){const t=$('toast');t.textContent=msg;t.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>t.style.display='none',2300);}const showToast=toast;
+
+function startSolo(){playerName=($('startName').value.trim()||'Player').slice(0,20);$('name').value=playerName;state.phase='lobby';state.hostId=myId;state.players={[myId]:{name:playerName,ready:true}};setConnection(false,'Solo game');$('startOverlay').classList.add('hidden');startSelecting();}
+async function createRoom(code){if(!supa){toast('Multiplayer client failed to load. Use solo or host the files with a valid Supabase project.');return false;}await leaveRoom(false);playerName=($('startName').value.trim()||playerName||'Player').slice(0,20);roomCode=(code||makeCode()).toUpperCase();state.phase='lobby';state.scenario='modern';state.turn=0;state.hostId=myId;state.players={[myId]:{name:playerName,ready:false}};state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};channel=supa.channel('atlas-conquest-'+roomCode,{config:{presence:{key:myId}}});wireChannel();const status=await subscribeChannel();if(status!=='SUBSCRIBED'){await leaveRoom(false);toast('Could not connect to the room service.');return false;}await trackPresence();setConnection(true,'Multiplayer connected');$('startOverlay').classList.add('hidden');addActivity('Created room '+roomCode);showToast('Room '+roomCode+' created');renderPlayers();return true;}
+async function joinRoom(code){if(!supa){toast('Multiplayer client failed to load.');return false;}const c=(code||'').trim().toUpperCase();if(c.length!==6){toast('Enter a 6-character room code.');return false;}await leaveRoom(false);playerName=($('startName').value.trim()||playerName||'Player').slice(0,20);roomCode=c;state.phase='lobby';state.turn=0;state.hostId=null;state.players={[myId]:{name:playerName,ready:false}};state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};channel=supa.channel('atlas-conquest-'+roomCode,{config:{presence:{key:myId}}});wireChannel();const status=await subscribeChannel();if(status!=='SUBSCRIBED'){await leaveRoom(false);toast('Could not connect to the room.');return false;}await trackPresence();await broadcast('request_state',{from:myId});setConnection(true,'Connected · waiting for host');$('startOverlay').classList.add('hidden');addActivity('Joined room '+roomCode);return true;}
+
+function draw(){drawCountries();updateLegend();renderPlayers();renderGameText();if(selected&&countryData[selected]&&state.phase!=='selecting')renderIntel(countryData[selected],selected);countClaims();}
+
+$('startSolo').onclick=()=>startSolo();
+$('startCreate').onclick=async()=>{playerName=($('startName').value.trim()||'Player').slice(0,20);$('name').value=playerName;await createRoom();};
+$('startJoin').onclick=async()=>{playerName=($('startName').value.trim()||'Player').slice(0,20);$('name').value=playerName;await joinRoom($('startRoomCode').value);};
+$('create').onclick=async()=>{playerName=($('name').value.trim()||'Player').slice(0,20);$('startName').value=playerName;await createRoom($('code').value.trim()||undefined);};
+$('join').onclick=async()=>{playerName=($('name').value.trim()||'Player').slice(0,20);$('startName').value=playerName;await joinRoom($('code').value.trim());};
+$('ready').onclick=async()=>{const next=!state.players[myId]?.ready;state.players[myId]={...(state.players[myId]||{}),name:playerName,ready:next};if(channel)await trackPresence();$('ready').textContent=next?'Unready':'Ready';renderPlayers();};
+$('startSelection').onclick=()=>sendAction({type:'start_selection'});
+$('copyRoom').onclick=async()=>{try{await navigator.clipboard.writeText(roomCode);toast('Room code copied.');}catch(e){toast('Room code: '+roomCode);}};
+$('leave').onclick=()=>leaveRoom(true);
+$('countrySearch').oninput=()=>renderCountryList();
+$('countryRegion').onchange=()=>renderCountryList();
+$('countryAvailability').onchange=()=>renderCountryList();
+$('confirmCountry').onclick=()=>confirmPick(selected);
+$('pickRandom').onclick=()=>chooseRandom();
+$('launchGame').onclick=()=>sendAction({type:'launch_game'});
+$('closePick').onclick=()=>{if(state.hostId===myId&&state.phase==='selecting'){state.phase='lobby';state.choices={};broadcast('state',snapshot());applySnapshot(snapshot());}else $('pickOverlay').classList.add('hidden');};
+$('recruit').onclick=()=>selected&&state.owners[selected]===myId&&sendAction({type:'recruit',country:selected});
+$('fortify').onclick=()=>selected&&state.owners[selected]===myId&&sendAction({type:'fortify',country:selected});
+$('helpBtn').onclick=()=>{$('helpOverlay').classList.remove('hidden');$('closeHelp').focus();};
+$('closeHelp').onclick=()=>{$('helpOverlay').classList.add('hidden');$('helpBtn').focus();};
+$('helpOverlay').addEventListener('click',e=>{if(e.target===$('helpOverlay'))$('closeHelp').click();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('helpOverlay').classList.contains('hidden'))$('closeHelp').click();});
+
+$('endTurn').onclick=()=>sendAction({type:'end_turn'});
+$('startRetry').onclick=async()=>{try{await loadWorld();updateScenarioPanel();}catch(e){}};
+
+(async()=>{try{await loadWorld();updateScenarioPanel();}catch(e){}})();
+</script>
+</body>
+</html>
