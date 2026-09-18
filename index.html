@@ -44,6 +44,60 @@ button{min-height:38px}
 @media(max-width:650px){.gameHelp,.helpGrid{grid-template-columns:1fr}.helpBox{padding:16px}}
 
 
+/* Atlas Conquest 3.0 — faster startup + country draft UI */
+.startStatus{min-height:18px}
+.startError{margin:10px auto 0;max-width:650px;padding:10px 12px;border:1px solid #7a3f4a;background:#2b1420;border-radius:11px;color:#ffd7de;font-size:10px;line-height:1.45;text-align:left}
+.startRetryRow{display:flex;justify-content:center;margin-top:8px}
+.pickBox{width:min(1100px,97vw)}
+.pickTop{display:flex;justify-content:space-between;gap:18px;align-items:flex-start}
+.pickTop h2{margin:2px 0 4px;font-size:30px;letter-spacing:-.4px}
+.pickTop p{margin:0;color:#a5bad0;font-size:11px;max-width:670px}
+.pickTopRight{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.pickSteps{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
+.pickSteps span{font-size:9px;color:#7f97ae;padding:5px 7px;border:1px solid #243b55;background:#0a1523;border-radius:999px}
+.pickSteps .active{color:#d8f4ff;border-color:#4e9fc5;background:#0d2636}
+.pickStats{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:14px}
+.pickStat{background:#091624;border:1px solid #223d58;border-radius:11px;padding:9px 10px}
+.pickStat b{display:block;font-size:16px;line-height:1.05}
+.pickStat span{display:block;color:#849cb5;font-size:8px;margin-top:4px;text-transform:uppercase;letter-spacing:.6px}
+.pickStat.accentStat{border-color:#3d6784;background:linear-gradient(180deg,#0d2132,#091624)}
+.pickStat.accentStat b{font-size:11px;color:#bfe9ff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pickToolbar{display:grid;grid-template-columns:minmax(0,1fr) 165px 165px;gap:7px}
+.searchWrap{display:flex;align-items:center;gap:6px;background:#081421;border:1px solid #29425e;border-radius:10px;padding:0 9px}
+.searchWrap>span{color:#6f8da8;font-size:15px}
+.searchWrap .countrySearch{border:0;padding:10px 0;background:transparent}
+.countryFilter{width:100%;padding:9px 10px;background:#081421;border:1px solid #29425e;border-radius:10px;color:var(--text)}
+.pickBrowseHead{display:flex;justify-content:space-between;margin-top:10px;color:#7892ac;font-size:8px;letter-spacing:1px;font-weight:850}
+.countryList{grid-template-columns:repeat(4,minmax(0,1fr));max-height:48vh;padding-right:2px}
+.countryOption{position:relative;min-height:67px;padding:9px 10px;display:flex;flex-direction:column;justify-content:space-between}
+.countryOption .rowTop{display:flex;align-items:flex-start;justify-content:space-between;gap:6px}
+.countryOption .code{font-size:8px;color:#7090ad;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;letter-spacing:.7px}
+.countryOption .meta{font-size:8px;color:#7894ad;margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.countryOption .badgeMini{align-self:flex-start;margin-top:5px;font-size:8px;color:#82a0bb}
+.countryOption.mine{border-color:#5dc7ff;box-shadow:0 0 0 1px rgba(93,199,255,.22) inset}
+.countryOption.locked{filter:saturate(.5)}
+.countryOption.locked .badgeMini{color:#e2bb70}
+.countryOption .check{position:absolute;right:8px;bottom:8px;color:#72e1a3;font-size:12px}
+.pickCard{position:sticky;top:0;height:max-content;box-shadow:0 18px 40px rgba(0,0,0,.18)}
+.selectedRibbon{display:flex;justify-content:space-between;align-items:center;color:#7f9ab4;font-size:8px;letter-spacing:1px;font-weight:900;margin-bottom:8px}
+.selectedRibbon span:last-child{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;color:#b9d5ea}
+.pickPreview{min-height:226px}
+.pickPreview .countryHero{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.pickPreview .countryGlyph{width:64px;height:64px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,#11263c,#0a1524);border:1px solid #27415c;font-size:29px}
+.pickPreview .pickStatus{font-size:8px;padding:5px 7px;border-radius:999px;border:1px solid #2c526f;color:#9fc8e2}
+.pickPreview .pickStatus.taken{border-color:#7a5733;color:#e4bf77}
+.pickPreview .pickStatus.mine{border-color:#2f8f66;color:#89e5b2}
+.previewStats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:9px}
+.previewStat{background:#07111d;border:1px solid #1e3750;border-radius:9px;padding:7px}
+.previewStat b{display:block;font-size:12px}
+.previewStat span{display:block;color:#7f97b0;font-size:8px;margin-top:2px}
+.pickPlayers{margin-top:9px;max-height:90px;overflow:auto}
+.pickPlayer{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-bottom:1px solid #182d42;font-size:9px}
+.pickPlayer:last-child{border-bottom:0}
+.pickPlayer .state{font-size:8px;color:#88a0b7}
+@media(max-width:1050px){.pickBrowse{order:2}.pickCard{position:static}.pickToolbar{grid-template-columns:minmax(0,1fr) 150px}.countryFilter:last-child{grid-column:1/-1}.countryList{grid-template-columns:repeat(4,minmax(0,1fr))}}
+@media(max-width:650px){.pickTop{flex-direction:column}.pickTopRight{width:100%;align-items:flex-start}.pickSteps{justify-content:flex-start}.pickStats{grid-template-columns:1fr 1fr}.pickToolbar{grid-template-columns:1fr 1fr}.searchWrap{grid-column:1/-1}.countryList{grid-template-columns:repeat(2,minmax(0,1fr));max-height:41vh}.countryOption{min-height:72px}.pickBox{padding:16px 12px}.pickTop h2{font-size:24px}}
+
 /* Strategy expansion */
 .strategyPanel{margin-top:10px}
 .strategyGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:8px}
@@ -78,22 +132,59 @@ button{min-height:38px}
   <div class="features"><div class="feature">🌍 177 countries</div><div class="feature">⚔️ Conquest combat</div><div class="feature">🤖 AI world powers</div><div class="feature">⚡ Live rooms</div></div>
   <div class="startSetup"><input id="startName" class="full" maxlength="20" placeholder="Your player name"><input id="startRoomCode" maxlength="6" placeholder="Room code (for joining)"><div class="small" style="display:flex;align-items:center">Create a room for friends, or enter the host's 6-character code.</div></div>
   <div class="startActions"><button id="startSolo" class="ghost bigStart">PLAY SOLO</button><button id="startCreate" class="primary bigStart">CREATE ROOM</button><button id="startJoin" class="bigStart">JOIN ROOM</button></div>
-  <div id="startStatus" class="small" style="text-align:center;margin-top:12px">Loading world data…</div>
+  <div id="startStatus" class="small startStatus" style="text-align:center;margin-top:12px">Loading world map…</div>
+  <div id="startError" class="startError hidden" role="alert"></div>
+  <div class="startRetryRow"><button id="startRetry" class="ghost hidden">↻ Retry world loading</button></div>
  </div>
 </div>
 
-<div id="pickOverlay" class="hidden">
+<div id="pickOverlay" class="hidden" role="dialog" aria-modal="true" aria-labelledby="pickTitle">
  <div class="pickBox">
-  <div class="pickHeader"><div><h2 id="pickTitle">Choose your country</h2><p id="pickSubtitle">Every human player needs a unique country. All remaining countries will become AI powers.</p></div><div class="badge" id="pickPhaseBadge">COUNTRY SELECT</div></div>
-  <div class="pickGrid">
+  <div class="pickTop">
    <div>
-    <input id="countrySearch" class="countrySearch" placeholder="Search country…">
+    <div class="eyebrow" style="text-align:left">ATLAS CONQUEST · COUNTRY DRAFT</div>
+    <h2 id="pickTitle">Choose your country</h2>
+    <p id="pickSubtitle">Pick one country. Human players cannot choose the same country.</p>
+   </div>
+   <div class="pickTopRight">
+    <div class="badge" id="pickPhaseBadge">COUNTRY SELECT</div>
+    <div class="pickSteps" aria-label="Country selection steps"><span class="step active">1 Pick</span><span>2 Lock</span><span>3 Launch</span></div>
+   </div>
+  </div>
+  <div class="pickStats">
+   <div class="pickStat"><b id="availableCount">0</b><span>Available</span></div>
+   <div class="pickStat"><b id="claimedCount">0</b><span>Chosen</span></div>
+   <div class="pickStat"><b id="playerCountPick">0</b><span>Players</span></div>
+   <div class="pickStat accentStat"><b id="myPickLabel">NONE</b><span>Your pick</span></div>
+  </div>
+  <div class="pickGrid">
+   <div class="pickBrowse">
+    <div class="pickToolbar">
+     <div class="searchWrap"><span aria-hidden="true">⌕</span><input id="countrySearch" class="countrySearch" placeholder="Search country…" autocomplete="off"></div>
+     <select id="countryRegion" class="countryFilter" aria-label="Filter by continent">
+      <option value="all">All continents</option>
+     </select>
+     <select id="countryAvailability" class="countryFilter" aria-label="Filter by availability">
+      <option value="all">All countries</option>
+      <option value="available">Available only</option>
+      <option value="mine">My pick</option>
+      <option value="taken">Taken</option>
+     </select>
+    </div>
+    <div class="pickBrowseHead"><span>COUNTRIES</span><span id="countryListMeta">177 nations</span></div>
     <div id="countryList" class="countryList" style="margin-top:8px"></div>
    </div>
-   <div class="pickCard"><div id="pickPreview" class="pickPreview"><h3>Select a country</h3><div class="small">Click a country on this list or directly on the map behind this window.</div></div><div id="pickPlayers" class="small" style="margin-top:8px"></div><div class="pickActions"><button id="confirmCountry" class="primary" disabled>LOCK COUNTRY</button><button id="pickRandom">RANDOM</button></div><div id="launchNote" class="selectHint" style="margin-top:9px">Waiting for the host to launch the match.</div><div class="pickActions" style="margin-top:8px"><button id="launchGame" class="good hidden">LAUNCH GAME</button><button id="closePick" class="ghost">BACK TO LOBBY</button></div></div>
+   <div class="pickCard">
+    <div class="selectedRibbon"><span>SELECTED</span><span id="selectedCode">—</span></div>
+    <div id="pickPreview" class="pickPreview"><h3>Select a country</h3><div class="small">Tap a country card to preview it before locking your choice.</div></div>
+    <div id="pickPlayers" class="pickPlayers"></div>
+    <div class="pickActions"><button id="confirmCountry" class="primary actionPrimary" disabled>LOCK COUNTRY</button><button id="pickRandom">RANDOM</button></div>
+    <div id="launchNote" class="selectHint" style="margin-top:9px">Waiting for players…</div>
+    <div class="pickActions" style="margin-top:8px"><button id="launchGame" class="good hidden">LAUNCH GAME</button><button id="closePick" class="ghost">BACK TO LOBBY</button></div>
+   </div>
   </div>
  </div>
-</div>
+</div>>
 
 <div id="app">
 <header class="topbar"><div class="brand"><span class="brandMark" aria-hidden="true">◎</span><span>ATLAS CONQUEST</span><span class="kicker">WORLD STRATEGY</span></div><div class="live"><i id="liveDot" class="liveDot"></i><span id="status">Offline</span></div><div class="spacer"></div><div id="scenarioPill" class="pill">MODERN</div><div id="roomPill" class="pill roomPill hidden">ROOM —</div><div id="turnPill" class="pill">LOBBY</div><div id="playerPill" class="pill">0 ONLINE</div></header>
@@ -300,7 +391,59 @@ function myFunds(){return state.funds[myId]??0;}
 function setConnection(on,text){$('liveDot').classList.toggle('on',on);$('status').textContent=text;}
 function addActivity(text){const key=text+Date.now()+Math.random();if(seenEvents.includes(key))return;seenEvents.push(key);seenEvents=seenEvents.slice(-40);const row=document.createElement('div');row.className='event';row.textContent=text;const box=$('activity');if(box.querySelector('.small'))box.innerHTML='';box.prepend(row);while(box.children.length>14)box.lastElementChild.remove();}
 
-async function loadWorld(){const[geoRes,dataRes]=await Promise.all([fetch('world.geojson'),fetch('country_data.json')]);if(!geoRes.ok||!dataRes.ok)throw new Error('Bundled world files could not be loaded');world=await geoRes.json();countryData=await dataRes.json();world.features.forEach(f=>{const p=f.properties,k=isoKey(p);countryData[k]={...p,stats:statsFor(p,{})};});buildMap();try{await refreshWorldBank();$('dataBadge').textContent='LIVE INDICATORS';$('dataNote').textContent='Population, GDP and land indicators refreshed when the World Bank service is reachable.';}catch(e){$('dataBadge').textContent='OFFLINE BASELINE';$('dataNote').textContent='Deterministic bundled gameplay estimates are active.';}draw();}
+async function fetchAssetJson(file,timeoutMs=12000){
+ const controller=new AbortController();
+ const timer=setTimeout(()=>controller.abort(),timeoutMs);
+ const url=new URL('./'+file,document.baseURI).href;
+ try{
+  const res=await fetch(url,{cache:'no-store',signal:controller.signal});
+  if(!res.ok)throw new Error(file+' returned HTTP '+res.status);
+  return await res.json();
+ }catch(err){
+  const detail=err?.name==='AbortError'?'timed out after '+Math.round(timeoutMs/1000)+'s':(err?.message||'request failed');
+  throw new Error(file+' could not be loaded from '+url+' · '+detail);
+ }finally{clearTimeout(timer);}
+}
+function showWorldLoadError(err){
+ const msg=err?.message||String(err);
+ $('startStatus').textContent='World map could not start.';
+ $('startStatus').style.color='#ffb7c1';
+ $('startError').innerHTML='<b>Startup error</b><br>'+escapeHtml(msg)+'<br><span style="color:#c4cfdb">Check that <b>index.html</b>, <b>world.geojson</b> and <b>country_data.json</b> are all in the same GitHub Pages folder.</span>';
+ $('startError').classList.remove('hidden');
+ $('startRetry').classList.remove('hidden');
+ $('status').textContent='World load failed';
+}
+async function loadWorld(){
+ $('startStatus').textContent='Loading world map…';
+ $('startError').classList.add('hidden');
+ $('startRetry').classList.add('hidden');
+ try{
+  const [geo,data]=await Promise.all([fetchAssetJson('world.geojson'),fetchAssetJson('country_data.json')]);
+  world=geo;
+  countryData=data;
+  world.features.forEach(f=>{const p=f.properties,k=isoKey(p);countryData[k]={...p,stats:statsFor(p,{})};});
+  buildMap();
+  neighbors=buildNeighborGraph();
+  draw();
+  renderScenarioPicker();
+  $('dataBadge').textContent='OFFLINE BASELINE';
+  $('dataNote').textContent='Bundled world data loaded. Live indicators refresh in the background when reachable.';
+  $('startStatus').textContent=supa?'World ready · multiplayer ready':'World ready · solo mode';
+  $('startStatus').style.color='';
+  $('status').textContent=supa?'Multiplayer ready':'Solo mode';
+  $('startRetry').classList.add('hidden');
+  // Optional live indicators never block the game from starting.
+  refreshWorldBank().then(()=>{
+    $('dataBadge').textContent='LIVE INDICATORS';
+    $('dataNote').textContent='Population, GDP and land indicators refreshed when the World Bank service is reachable.';
+    draw();
+  }).catch(()=>{});
+ }catch(e){
+  console.error(e);
+  showWorldLoadError(e);
+  throw e;
+ }
+}
 async function refreshWorldBank(){const controller=new AbortController();const timer=setTimeout(()=>controller.abort(),4500);try{const inds=['SP.POP.TOTL','NY.GDP.MKTP.CD','AG.LND.AGRI.ZS','AG.LND.ARBL.ZS','AG.LND.FRST.ZS'];const u='https://api.worldbank.org/v2/country/all/indicator/'+inds.join(';')+'?format=json&per_page=20000&mrv=1';const res=await fetch(u,{cache:'no-store',signal:controller.signal});if(!res.ok)throw new Error('World Bank request failed');const payload=await res.json(),rows=payload[1]||[],wb={};for(const r of rows){if(!r.countryiso3code)continue;const k=r.countryiso3code;wb[k]??={};if(r.indicator?.id==='SP.POP.TOTL')wb[k].pop=r.value;if(r.indicator?.id==='NY.GDP.MKTP.CD')wb[k].gdp=r.value;if(r.indicator?.id==='AG.LND.AGRI.ZS')wb[k].agri=r.value;if(r.indicator?.id==='AG.LND.ARBL.ZS')wb[k].arable=r.value;if(r.indicator?.id==='AG.LND.FRST.ZS')wb[k].forest=r.value;}world.features.forEach(f=>{const p=f.properties,k=isoKey(f.properties);countryData[k].stats=statsFor(p,wb[p.iso_a3]||{});});}finally{clearTimeout(timer);}}
 function setupLayers(){const el=$('layers');el.innerHTML='';for(const[key,label]of layers){const b=document.createElement('button');b.textContent=label;b.dataset.layer=key;b.onclick=()=>{activeLayer=key;document.querySelectorAll('#layers button').forEach(x=>x.classList.toggle('active',x===b));drawCountries();updateLegend();};el.appendChild(b);}el.firstChild.classList.add('active');}
 function buildMap(){setupLayers();const svg=d3.select('#map');svg.selectAll('*').remove();mapGroup=svg.append('g');projection=d3.geoNaturalEarth1();projection.fitExtent([[10,12],[990,588]],world);path=d3.geoPath(projection);mapGroup.append('rect').attr('class','water').attr('x',0).attr('y',0).attr('width',1000).attr('height',600);zoom=d3.zoom().scaleExtent([1,18]).on('zoom',e=>mapGroup.attr('transform',e.transform));svg.call(zoom);$('resetZoom').onclick=()=>svg.transition().duration(350).call(zoom.transform,d3.zoomIdentity);}
@@ -323,7 +466,7 @@ function renderPickPlayers(){if(!$('pickPlayers'))return;const entries=Object.en
 function updateTurnUI(){const humanIds=Object.keys(state.players);const doneCount=humanIds.filter(id=>state.done[id]).length;const total=humanIds.length||1;if(state.phase==='game'){$('turnPill').textContent='TURN '+state.turn;$('turnLabel').textContent='Turn '+state.turn;$('turnHint').textContent=doneCount+'/'+total+' human players ended their turn';$('turnProgress').style.width=Math.round(doneCount/total*100)+'%';$('endTurn').disabled=!!state.done[myId];$('endTurn').textContent=state.done[myId]?'TURN ENDED':'END TURN';$('recruit').disabled=true;}else{$('turnPill').textContent=state.phase==='selecting'?'SELECT':'LOBBY';$('turnLabel').textContent=state.phase==='selecting'?'Country selection':'Lobby';$('turnHint').textContent=state.phase==='selecting'?'Pick a unique country. Unpicked countries become AI powers.':'Host chooses a scenario and starts country selection.';$('turnProgress').style.width='0%';$('endTurn').disabled=true;$('recruit').disabled=true;}}
 function snapshot(){return{phase:state.phase,scenario:state.scenario,turn:state.turn,hostId:state.hostId,players:{...state.players},choices:{...state.choices},owners:{...state.owners},countryState:{...state.countryState},funds:{...state.funds},done:{...state.done},factions:{...state.factions}};}
 function applySnapshot(s){if(!s||typeof s!=='object')return;const oldPhase=state.phase;state.phase=s.phase||'lobby';state.scenario=s.scenario||'modern';state.turn=Number(s.turn||0);state.hostId=s.hostId||state.hostId;state.players={...(s.players||state.players)};state.choices={...(s.choices||{})};state.owners={...(s.owners||{})};state.countryState={...(s.countryState||{})};state.funds={...(s.funds||{})};state.done={...(s.done||{})};state.factions={...(s.factions||{})};$('scenarioPill').textContent=SCENARIOS[state.scenario]?.label||state.scenario.toUpperCase();if(state.phase==='selecting'){openPickOverlay();}else if(state.phase==='game'){$('pickOverlay').classList.add('hidden');}else if(oldPhase!=='lobby')$('pickOverlay').classList.add('hidden');renderPlayers();draw();renderGameText();ensureHostLoop();}
-function renderGameText(){updateTurnUI();$('mapHint').textContent=state.phase==='game'?'Select your country, then click an adjacent enemy to attack · build armies · end your turn':state.phase==='selecting'?'Choose a unique country on the map or in the selection window':'Click a country to inspect it · drag to pan · wheel/pinch to zoom';updateLegend();}
+function renderGameText(){updateTurnUI();$('mapHint').textContent=state.phase==='game'?'Select your country, then click an adjacent enemy to attack · build armies · end your turn':state.phase==='selecting'?'Choose a unique country in the selection window':'Click a country to inspect it · drag to pan · wheel/pinch to zoom';updateLegend();}
 
 function buildNeighborGraph(){const keys=world.features.map(f=>isoKey(f.properties));const out={};for(const k of keys)out[k]=[];const items=world.features.map(f=>{const p=f.properties;return{k:isoKey(p),lat:+p.center_lat||0,lon:+p.center_lon||0,cont:p.continent};});for(let i=0;i<items.length;i++)for(let j=i+1;j<items.length;j++){const a=items[i],b=items[j];let dlon=Math.abs(a.lon-b.lon);if(dlon>180)dlon=360-dlon;const dx=dlon*90*Math.cos(((a.lat+b.lat)/2)*Math.PI/180);const dy=Math.abs(a.lat-b.lat)*111;const d=Math.sqrt(dx*dx+dy*dy);const threshold=(a.cont===b.cont?1050:720);if(d<threshold){out[a.k].push(b.k);out[b.k].push(a.k);}}const extras=[['ESP','PRT'],['ESP','MAR'],['RUS','USA'],['JPN','KOR'],['GBR','FRA'],['GBR','NOR'],['IDN','MYS'],['IDN','PHL'],['AUS','IDN'],['ITA','GRC'],['TUR','GRC'],['EGY','CYP']];for(const[a,b]of extras){if(out[a]&&out[b]){if(!out[a].includes(b))out[a].push(b);if(!out[b].includes(a))out[b].push(a);}}return out;}
 let neighbors={};
@@ -335,13 +478,120 @@ state.phase='game';state.turn=1;for(const pid of Object.keys(state.players))stat
 function ensureAllHumansPicked(){for(const pid of Object.keys(state.players))if(!Object.values(state.choices).includes(pid))return false;return true;}
 function startSelecting(){state.phase='selecting';state.scenario=state.scenario||'modern';state.choices={};state.owners={};state.countryState={};state.funds={};state.done={};for(const p of Object.values(state.players))p.ready=false;selected=null;addActivity('Country selection opened · '+SCENARIOS[state.scenario].name);openPickOverlay();broadcast('state',snapshot());applySnapshot(snapshot());}
 function confirmPick(k){if(!k||!countryData[k])return;if(state.phase!=='selecting')return;sendAction({type:'choose_country',country:k});}
-function showPickPreview(k){const p=countryData[k];if(!p)return;const chosenBy=state.choices[k];const mine=chosenBy===myId;const locked=chosenBy&&chosenBy!==myId;$('pickPreview').innerHTML='<div class="flagBox">'+(SCENARIOS[state.scenario].label==='MODERN'?'🌐':SCENARIOS[state.scenario].label==='WWI'?'⚔️':'🪖')+'</div><h3 style="margin-top:9px">'+escapeHtml(p.name)+'</h3><div class="small">'+escapeHtml(p.continent)+' · '+escapeHtml(p.stats.terrain)+' · Fertility '+Math.round(p.stats.fertility)+'/100</div><div class="small" style="margin-top:5px"><b>Starting army:</b> '+baseArmy(k)+' · <b>Resources:</b> '+Math.round(p.stats.resourceTotal)+'/100</div><div class="small" style="margin-top:5px">'+(locked?'Locked by '+escapeHtml(ownerName(chosenBy)):mine?'This is your current selection.':'Available to claim.')+'</div>';$('confirmCountry').disabled=locked||mine;$('confirmCountry').textContent=mine?'LOCKED':locked?'TAKEN':'LOCK COUNTRY';}
-function renderCountryList(){const q=$('countrySearch').value.trim().toLowerCase();const keys=world.features.map(f=>isoKey(f.properties)).filter(k=>(countryData[k]?.name||k).toLowerCase().includes(q)).sort((a,b)=>countryData[a].name.localeCompare(countryData[b].name));$('countryList').innerHTML=keys.map(k=>{const p=countryData[k],chosenBy=state.choices[k],mine=chosenBy===myId;return'<button class="countryOption '+(mine?'active ':'')+(chosenBy&&!mine?'locked':'')+'" data-country="'+escapeHtml(k)+'"><span class="n">'+escapeHtml(p.name)+'</span><span class="m">'+(chosenBy?(mine?'YOUR PICK':'TAKEN'):'AVAILABLE')+'</span></button>';}).join('');document.querySelectorAll('.countryOption').forEach(b=>b.onclick=()=>{selected=b.dataset.country;showPickPreview(selected);renderCountryList();});renderPickPlayers();}
-function openPickOverlay(){if(!world)return;$('pickOverlay').classList.remove('hidden');$('pickTitle').textContent='Choose your country';$('pickSubtitle').textContent=SCENARIOS[state.scenario].name+' · Every human player needs a unique country. All remaining countries will become AI powers.';$('pickPhaseBadge').textContent=SCENARIOS[state.scenario].label+' SELECT';$('launchGame').classList.toggle('hidden',state.hostId!==myId);$('closePick').textContent=state.hostId===myId?'BACK TO LOBBY':'HIDE WINDOW';renderCountryList();if(selected)showPickPreview(selected);renderLaunchNote();}
-function renderLaunchNote(){const picked=Object.keys(state.players).filter(pid=>Object.values(state.choices).includes(pid)).length;const total=Object.keys(state.players).length||1;if(state.hostId===myId){$('launchNote').textContent=picked===total?'All players picked. Launch to fill the world with AI powers.':picked+'/'+total+' players picked. You can launch and any missing player gets a random country.';}else{$('launchNote').textContent=picked+'/'+total+' players picked. Waiting for host to launch.';}}
-function chooseRandom(){const free=world.features.map(f=>isoKey(f.properties)).filter(k=>!state.choices[k]);if(!free.length)return toast('No countries left');selected=free[Math.floor(Math.random()*free.length)];showPickPreview(selected);renderCountryList();}
-function launchGame(){if(state.hostId!==myId)return;for(const pid of Object.keys(state.players)){if(!Object.values(state.choices).includes(pid)){const free=world.features.map(f=>isoKey(f.properties)).filter(k=>!state.choices[k]);if(free.length)state.choices[free[Math.floor(Math.random()*free.length)]]=pid;}}initGameState();addActivity('Game launched · unpicked countries are now AI powers');broadcast('state',snapshot());applySnapshot(snapshot());}
-
+function countryGlyph(p){
+ const c=p.continent||'';
+ return c==='Africa'?'🌍':c==='Asia'?'🌏':c==='Europe'?'🏰':c==='North America'?'🦅':c==='South America'?'🌎':c==='Oceania'?'🌊':'🗺️';
+}
+function formatCompact(n){if(n==null||!isFinite(n))return'—';if(Math.abs(n)>=1e9)return(n/1e9).toFixed(1)+'B';if(Math.abs(n)>=1e6)return(n/1e6).toFixed(1)+'M';if(Math.abs(n)>=1e3)return(n/1e3).toFixed(1)+'K';return Math.round(n).toLocaleString();}
+function refreshPickStats(){
+ const all=world?.features||[];
+ const keys=all.map(f=>isoKey(f.properties));
+ const claimed=keys.filter(k=>state.choices[k]);
+ const available=keys.length-claimed.length;
+ $('availableCount').textContent=available;
+ $('claimedCount').textContent=claimed.length;
+ $('playerCountPick').textContent=Object.keys(state.players||{}).length;
+ const myCountry=Object.keys(state.choices||{}).find(k=>state.choices[k]===myId);
+ $('myPickLabel').textContent=myCountry?(countryData[myCountry]?.name||myCountry).toUpperCase():'NONE';
+}
+function renderPickPlayers(){
+ const box=$('pickPlayers');
+ const rows=Object.entries(state.players||{}).map(([pid,p])=>{const k=Object.keys(state.choices||{}).find(x=>state.choices[x]===pid);const label=k?(countryData[k]?.name||k):'Choosing…';const mine=pid===myId;return'<div class="pickPlayer"><span>'+escapeHtml((p?.name||'Player')+(mine?' (You)':''))+'</span><span class="state">'+escapeHtml(label)+'</span></div>';}).join('');
+ box.innerHTML=rows||'<div class="small">No players yet.</div>';
+ refreshPickStats();
+}
+function populateCountryRegions(){
+ const select=$('countryRegion');
+ if(!select||select.dataset.ready||!world)return;
+ const regions=[...new Set(world.features.map(f=>f.properties?.continent).filter(Boolean))].sort((a,b)=>a.localeCompare(b));
+ select.innerHTML='<option value="all">All continents</option>'+regions.map(r=>'<option value="'+escapeHtml(r)+'">'+escapeHtml(r)+'</option>').join('');
+ select.dataset.ready='1';
+}
+function pickFilterMode(k){
+ const owner=state.choices[k];
+ const mine=owner===myId;
+ if($('countryAvailability').value==='available')return !owner;
+ if($('countryAvailability').value==='mine')return mine;
+ if($('countryAvailability').value==='taken')return !!owner&&!mine;
+ return true;
+}
+function renderCountryList(){
+ if(!world)return;
+ populateCountryRegions();
+ const q=$('countrySearch').value.trim().toLowerCase();
+ const region=$('countryRegion').value;
+ const keys=world.features.map(f=>isoKey(f.properties)).filter(k=>{
+  const p=countryData[k]||{};
+  const name=(p.name||k).toLowerCase();
+  const continent=p.continent||'';
+  return (!q||name.includes(q)||(k||'').toLowerCase().includes(q))&&(region==='all'||continent===region)&&pickFilterMode(k);
+ }).sort((a,b)=>countryData[a].name.localeCompare(countryData[b].name));
+ const chosenCount=Object.keys(state.choices||{}).length;
+ $('countryListMeta').textContent=keys.length+' shown · '+chosenCount+' chosen';
+ $('countryList').innerHTML=keys.map(k=>{
+  const p=countryData[k],chosenBy=state.choices[k],mine=chosenBy===myId,locked=!!chosenBy&&!mine;
+  const s=p.stats||{}, availability=mine?'YOUR PICK':locked?'TAKEN':'AVAILABLE';
+  return '<button class="countryOption '+(mine?'mine ':'')+(locked?'locked':'')+'" data-country="'+escapeHtml(k)+'" aria-label="'+escapeHtml(p.name)+' · '+availability+'">'+
+    '<div class="rowTop"><span class="n">'+escapeHtml(p.name)+'</span><span class="code">'+escapeHtml(k)+'</span></div>'+
+    '<div class="meta">'+escapeHtml(p.continent||'')+' · '+escapeHtml(s.terrain||'Unknown terrain')+'</div>'+
+    '<span class="badgeMini">'+availability+' · '+Math.round(s.resourceTotal||0)+' RES</span>'+(
+      mine?'<span class="check">✓</span>':''
+    )+'</button>';
+ }).join('') || '<div class="small" style="grid-column:1/-1;padding:16px;text-align:center">No countries match those filters.</div>';
+ document.querySelectorAll('.countryOption').forEach(b=>b.onclick=()=>{selected=b.dataset.country;showPickPreview(selected);renderCountryList();});
+ renderPickPlayers();
+}
+function showPickPreview(k){
+ const p=countryData[k];
+ if(!p)return;
+ const chosenBy=state.choices[k],mine=chosenBy===myId,locked=chosenBy&&!mine,s=p.stats||{};
+ $('selectedCode').textContent=k;
+ $('pickPreview').innerHTML='<div class="countryHero"><div class="countryGlyph">'+countryGlyph(p)+'</div><span class="pickStatus '+(mine?'mine':locked?'taken':'')+'">'+(mine?'YOUR PICK':locked?'TAKEN':'AVAILABLE')+'</span></div>'+
+  '<h3 style="margin:10px 0 2px">'+escapeHtml(p.name)+'</h3>'+
+  '<div class="small">'+escapeHtml(p.continent||'')+' · '+escapeHtml(s.terrain||'Unknown terrain')+' · '+escapeHtml(k)+'</div>'+
+  '<div class="previewStats">'+
+   '<div class="previewStat"><b>'+baseArmy(k)+'</b><span>Starting army</span></div>'+
+   '<div class="previewStat"><b>'+Math.round(s.resourceTotal||0)+'/100</b><span>Resource score</span></div>'+
+   '<div class="previewStat"><b>'+Math.round(s.fertility||0)+'/100</b><span>Fertility</span></div>'+
+   '<div class="previewStat"><b>'+formatCompact(s.pop)+'</b><span>Population</span></div>'+
+  '</div>'+
+  '<div class="small" style="margin-top:8px">'+(locked?'Another player has already locked this country.':mine?'This country is locked to you.':'Available to claim. Lock it when you are ready.')+'</div>';
+ $('confirmCountry').disabled=locked||mine;
+ $('confirmCountry').textContent=mine?'LOCKED':locked?'TAKEN':'LOCK COUNTRY';
+}
+function openPickOverlay(){
+ if(!world)return;
+ populateCountryRegions();
+ $('pickOverlay').classList.remove('hidden');
+ $('pickTitle').textContent='Choose your country';
+ $('pickSubtitle').textContent=SCENARIOS[state.scenario].name+' · Pick a unique starting nation. The host can launch when ready.';
+ $('pickPhaseBadge').textContent=SCENARIOS[state.scenario].label+' SELECT';
+ $('launchGame').classList.toggle('hidden',state.hostId!==myId);$('launchGame').textContent=(!roomCode&&state.hostId===myId)?'START CAMPAIGN':'LAUNCH GAME';
+ $('closePick').textContent=state.hostId===myId?'BACK TO LOBBY':'HIDE WINDOW';
+ refreshPickStats();
+ renderCountryList();
+ if(selected&&countryData[selected])showPickPreview(selected);else{const first=world.features.map(f=>isoKey(f.properties)).find(k=>!state.choices[k]);if(first){selected=first;showPickPreview(selected);}}
+ renderLaunchNote();
+}
+function renderLaunchNote(){
+ const picked=Object.keys(state.players).filter(pid=>Object.values(state.choices).includes(pid)).length;
+ const total=Object.keys(state.players).length||1;
+ if(state.hostId===myId){
+  $('launchNote').textContent=picked===total?'All players picked. Launch to fill every remaining nation with AI powers.':picked+'/'+total+' players picked. You can launch now; missing players receive a random country.';
+  document.querySelectorAll('.pickSteps span').forEach((x,i)=>x.classList.toggle('active',i<2));
+ }else{
+  $('launchNote').textContent=picked+'/'+total+' players picked. Waiting for the host to launch.';
+  document.querySelectorAll('.pickSteps span').forEach((x,i)=>x.classList.toggle('active',i===0));
+ }
+}
+function chooseRandom(){
+ const region=$('countryRegion').value;
+ const free=world.features.map(f=>isoKey(f.properties)).filter(k=>!state.choices[k]&&(region==='all'||countryData[k]?.continent===region));
+ if(!free.length)return toast('No available country matches this filter.');
+ selected=free[Math.floor(Math.random()*free.length)];
+ showPickPreview(selected);
+ renderCountryList();
+}
 function deterministicRoll(seed){return noise(state.scenario+'|'+state.turn+'|'+seed);}
 function canAttack(from,to,owner){return state.phase==='game'&&owner===myId&&getNeighbors(from).includes(to)&&state.owners[to]!==owner;}
 function resolveAttack(from,to,actor){if(!canAttack(from,to,actor)){toast('You can only attack an adjacent enemy from your own country.');return;}const a=state.countryState[from],d=state.countryState[to],roll=deterministicRoll(from+to),attackPower=a.army+a.industry*.22+a.fort*.3,defPower=d.army+d.industry*.18+d.fort*.6;const attackLoss=Math.max(2,Math.round(a.army*(.16+roll*.14)));const defLoss=Math.max(2,Math.round(d.army*(.42+roll*.18)));a.army=Math.max(1,a.army-attackLoss);d.army=Math.max(0,d.army-defLoss);if(attackPower>defPower*(.93+roll*.22)){state.owners[to]=actor;d.army=Math.max(2,Math.round(a.army*.35));d.fort=Math.max(0,d.fort-1);state.funds[actor]=Math.max(0,(state.funds[actor]||0)-4);addActivity(ownerName(actor)+' conquered '+countryData[to].name);}else addActivity(ownerName(actor)+' attacked '+countryData[to].name+' but was repelled.');}
@@ -397,6 +647,8 @@ $('startSelection').onclick=()=>sendAction({type:'start_selection'});
 $('copyRoom').onclick=async()=>{try{await navigator.clipboard.writeText(roomCode);toast('Room code copied.');}catch(e){toast('Room code: '+roomCode);}};
 $('leave').onclick=()=>leaveRoom(true);
 $('countrySearch').oninput=()=>renderCountryList();
+$('countryRegion').onchange=()=>renderCountryList();
+$('countryAvailability').onchange=()=>renderCountryList();
 $('confirmCountry').onclick=()=>confirmPick(selected);
 $('pickRandom').onclick=()=>chooseRandom();
 $('launchGame').onclick=()=>sendAction({type:'launch_game'});
@@ -409,8 +661,9 @@ $('helpOverlay').addEventListener('click',e=>{if(e.target===$('helpOverlay'))$('
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!$('helpOverlay').classList.contains('hidden'))$('closeHelp').click();});
 
 $('endTurn').onclick=()=>sendAction({type:'end_turn'});
+$('startRetry').onclick=async()=>{try{await loadWorld();updateScenarioPanel();}catch(e){}};
 
-(async()=>{try{await loadWorld();neighbors=buildNeighborGraph();renderScenarioPicker();$('startStatus').textContent=supa?'Multiplayer ready · choose solo or create a room':'Map ready · multiplayer service unavailable';setConnection(!!supa,supa?'Multiplayer ready':'Solo mode');updateScenarioPanel();}catch(e){console.error(e);$('startStatus').textContent='World load failed: '+e.message;$('status').textContent='World load failed';}})();
+(async()=>{try{await loadWorld();updateScenarioPanel();}catch(e){}})();
 </script>
 </body>
 </html>
